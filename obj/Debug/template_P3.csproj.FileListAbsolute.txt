@@ -8,3 +8,13 @@ C:\Users\HP\source\repos\P3Graphics\obj\Debug\template_P3.csproj.CoreCompileInpu
 C:\Users\HP\source\repos\P3Graphics\obj\Debug\template_P3.csproj.CopyComplete
 C:\Users\HP\source\repos\P3Graphics\obj\Debug\template_P3.exe
 C:\Users\HP\source\repos\P3Graphics\obj\Debug\template_P3.pdb
+C:\Users\rsbze\Source\Repos\P3Graphics2\bin\Debug\template_P3.exe.config
+C:\Users\rsbze\Source\Repos\P3Graphics2\bin\Debug\template_P3.exe
+C:\Users\rsbze\Source\Repos\P3Graphics2\bin\Debug\template_P3.pdb
+C:\Users\rsbze\Source\Repos\P3Graphics2\bin\Debug\OpenTK.dll
+C:\Users\rsbze\Source\Repos\P3Graphics2\bin\Debug\OpenTK.dll.config
+C:\Users\rsbze\Source\Repos\P3Graphics2\obj\Debug\template_P3.csprojResolveAssemblyReference.cache
+C:\Users\rsbze\Source\Repos\P3Graphics2\obj\Debug\template_P3.csproj.CoreCompileInputs.cache
+C:\Users\rsbze\Source\Repos\P3Graphics2\obj\Debug\template_P3.csproj.CopyComplete
+C:\Users\rsbze\Source\Repos\P3Graphics2\obj\Debug\template_P3.exe
+C:\Users\rsbze\Source\Repos\P3Graphics2\obj\Debug\template_P3.pdb
