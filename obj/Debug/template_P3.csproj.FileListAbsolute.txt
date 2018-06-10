@@ -1,0 +1,10 @@
+C:\Users\HP\Source\Repos\P3Graphics\bin\Debug\template_P3.exe.config
+C:\Users\HP\Source\Repos\P3Graphics\bin\Debug\template_P3.exe
+C:\Users\HP\Source\Repos\P3Graphics\bin\Debug\template_P3.pdb
+C:\Users\HP\Source\Repos\P3Graphics\bin\Debug\OpenTK.dll
+C:\Users\HP\Source\Repos\P3Graphics\bin\Debug\OpenTK.dll.config
+C:\Users\HP\Source\Repos\P3Graphics\obj\Debug\template_P3.csprojAssemblyReference.cache
+C:\Users\HP\Source\Repos\P3Graphics\obj\Debug\template_P3.csproj.CoreCompileInputs.cache
+C:\Users\HP\Source\Repos\P3Graphics\obj\Debug\template_P3.csproj.CopyComplete
+C:\Users\HP\Source\Repos\P3Graphics\obj\Debug\template_P3.exe
+C:\Users\HP\Source\Repos\P3Graphics\obj\Debug\template_P3.pdb
