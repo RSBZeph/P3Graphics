@@ -8,6 +8,7 @@ uniform sampler2D pixels;		// texture sampler
 // shader output
 out vec4 outputColor;
 
+
 // fragment shader
 void main()
 {
