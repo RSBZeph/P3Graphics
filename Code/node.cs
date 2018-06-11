@@ -4,7 +4,7 @@ using OpenTK.Graphics.OpenGL;
 public class node
 {
     public node Parent;
-    public Vector3 offset, position;
+    public Matrix4 offset, position;
     public string name;
     
 	public node(node parent, Vector3 Offset, string Name)
