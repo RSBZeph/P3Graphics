@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 class SceneGraph
 {
     public void Render()
@@ -12,4 +11,3 @@ class SceneGraph
 
     }
 }
-

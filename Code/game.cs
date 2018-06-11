@@ -9,7 +9,7 @@ using OpenTK.Graphics.OpenGL;
 namespace Template_P3 {
 
 class Game
-{//j/j
+{
 	// member variables
 	public Surface screen;					// background surface for printing etc.
 	public SceneGraph scenegraph;
