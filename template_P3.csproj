@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\game.cs" />
+    <Compile Include="Code\Light.cs" />
     <Compile Include="Code\mesh.cs" />
     <Compile Include="Code\meshLoader.cs" />
     <Compile Include="Code\quad.cs" />

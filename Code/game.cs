@@ -12,7 +12,8 @@ class Game
 {//j/j
 	// member variables
 	public Surface screen;					// background surface for printing etc.
-	Mesh mesh, floor;						// a mesh to draw using OpenGL
+	public SceneGraph scenegraph;
+    Mesh mesh, floor;						// a mesh to draw using OpenGL
 	const float PI = 3.1415926535f;			// PI
 	float a = 0;							// teapot rotation angle
 	Stopwatch timer;						// timer for measuring frame duration
@@ -22,7 +23,7 @@ class Game
 	RenderTarget target;					// intermediate render target
 	ScreenQuad quad;						// screen filling quad for post processing
 	bool useRenderTarget = true;
-
+        
 	// initialize
 	public void Init()
 	{
