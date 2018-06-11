@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 class SceneGraph
 {
+    public void Render()
+    { 
 
+    }
 }
 
