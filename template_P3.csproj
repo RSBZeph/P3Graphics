@@ -67,10 +67,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\game.cs" />
+    <Compile Include="Code\Light.cs" />
     <Compile Include="Code\mesh.cs" />
     <Compile Include="Code\meshLoader.cs" />
     <Compile Include="Code\quad.cs" />
     <Compile Include="Code\rendertarget.cs" />
+    <Compile Include="Code\SceneGraph.cs" />
     <Compile Include="Code\shader.cs" />
     <Compile Include="Code\surface.cs" />
     <Compile Include="Code\template.cs" />
