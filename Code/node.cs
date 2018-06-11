@@ -5,8 +5,9 @@ public class node
 {
     public node Parent;
     public Vector3 offset, position;
+    public string name;
     
-	public node(node parent, Vector3 Offset)
+	public node(node parent, Vector3 Offset, string Name)
 	{
         if (parent != null)
             position = parent.position + Offset;
@@ -14,5 +15,6 @@ public class node
             position = Offset;
         offset = Offset;
         Parent = parent;
+        name = Name;
 	}
 }
