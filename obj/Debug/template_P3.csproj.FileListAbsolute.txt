@@ -27,3 +27,4 @@ C:\Users\Robert\Source\Repos\P3Graphics\obj\Debug\template_P3.csproj.CoreCompile
 C:\Users\Robert\Source\Repos\P3Graphics\obj\Debug\template_P3.csproj.CopyComplete
 C:\Users\Robert\Source\Repos\P3Graphics\obj\Debug\template_P3.exe
 C:\Users\Robert\Source\Repos\P3Graphics\obj\Debug\template_P3.pdb
+C:\Users\rsbze\Source\Repos\P3Graphics2\obj\Debug\template_P3.csprojResolveAssemblyReference.cache
