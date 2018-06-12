@@ -9,7 +9,7 @@ class SceneGraph
 {
     public void Render()
     { 
-
+        
     }
 }
 

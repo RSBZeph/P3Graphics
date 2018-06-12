@@ -7,7 +7,7 @@ using OpenTK.Graphics.OpenGL;
 // Jacco Bikker, 2016
 
 namespace Template_P3 {
-
+   
 class Game
 {//j/j
 	// member variables
@@ -15,7 +15,7 @@ class Game
 	public SceneGraph scenegraph;
     Mesh mesh, floor;						// a mesh to draw using OpenGL
 	const float PI = 3.1415926535f;			// PI
-	float a = 0;							// teapot rotation angle
+	float a = 0f;							// teapot rotation angle
 	Stopwatch timer;						// timer for measuring frame duration
 	Shader shader;							// shader to use for rendering
 	Shader postproc;						// shader to use for post processing
@@ -38,7 +38,7 @@ class Game
 		shader = new Shader( "../../shaders/vs.glsl", "../../shaders/fs.glsl" );
 		postproc = new Shader( "../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl" );
 		// load a texture
-		wood = new Texture( "../../assets/wood.jpg" );
+		wood = new Texture( "../../assets/Earth.png" );
 		// create the render target
 		target = new RenderTarget( screen.width, screen.height );
 		quad = new ScreenQuad();
