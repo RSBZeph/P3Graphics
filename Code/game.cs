@@ -9,7 +9,7 @@ using OpenTK.Graphics.OpenGL;
 namespace Template_P3 {
 
 class Game
-{//j/j
+{
 	// member variables
 	public Surface screen;					// background surface for printing etc.
 	public SceneGraph scenegraph;
@@ -61,8 +61,11 @@ class Game
 	
 		// prepare matrix for vertex shader
 		Matrix4 transform = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a );
+        Matrix4 ftransform = transform;
 		transform *= Matrix4.CreateTranslation( 0, -4, -15 );
+        ftransform *= Matrix4.CreateTranslation( 0, -6, -15 );
 		transform *= Matrix4.CreatePerspectiveFieldOfView( 1.2f, 1.3f, .1f, 1000 );
+        ftransform *= Matrix4.CreatePerspectiveFieldOfView( 1.2f, 1.3f, .1f, 1000 );
 
 		// update rotation
 		a += 0.001f * frameDuration; 
@@ -75,7 +78,7 @@ class Game
 
 			// render scene to render target
 			mesh.Render( shader, transform, wood );
-			floor.Render( shader, transform, wood );
+			floor.Render( shader, ftransform, wood );
 
 			// render quad
 			target.Unbind();
@@ -85,7 +88,7 @@ class Game
 		{
 			// render scene directly to the screen
 			mesh.Render( shader, transform, wood );
-			floor.Render( shader, transform, wood );
+			floor.Render( shader, ftransform, wood );
 		}
 	}
 }
