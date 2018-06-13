@@ -5,7 +5,6 @@ in vec2 P;						// fragment position in screen space
 in vec2 uv;						// interpolated texture coordinates
 in vec4 worldPos;
 uniform sampler2D pixels;		// input texture (1st pass render target)
-uniform vec3 lightpos;			// hardcoded light //
 
 // shader output
 out vec3 outputColor;
@@ -17,7 +16,7 @@ void main()
 	// apply dummy postprocessing effect
 	float dx = P.x - 0.5, dy = P.y - 0.5;
 	float distance = sqrt( dx * dx + dy * dy );
-	outputColor *= 1f; //0.3f + 1 / (distance * distance) * 0.5f;
+	outputColor *= 1f;
 }
 
 // EOF
