@@ -43,6 +43,10 @@ namespace Template_P3
             // create the render target
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
+
+            int lightID = GL.GetUniformLocation(shader.programID,"lightPos");            
+            GL.UseProgram( shader.programID );
+            GL.Uniform3(lightID,100.0f, 100.0f, 35.0f); //xyz?
         }
 
         // tick for background surface

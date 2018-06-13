@@ -3,6 +3,7 @@
 // shader input
 in vec2 P;						// fragment position in screen space
 in vec2 uv;						// interpolated texture coordinates
+in vec4 worldPos;
 uniform sampler2D pixels;		// input texture (1st pass render target)
 uniform vec3 lightpos;			// hardcoded light //
 
