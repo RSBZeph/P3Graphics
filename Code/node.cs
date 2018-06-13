@@ -1,20 +1,28 @@
-﻿using System;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Template_P3;
 
-public class node
+
+namespace template_P3.Code
 {
-    public node Parent;
-    public Matrix4 offset, position;
-    public string name;
-    
-	public node(node parent, Vector3 Offset, string Name)
-	{
-        if (parent != null)
-            position = parent.position + Offset;
-        else
-            position = Offset;
-        offset = Offset;
-        Parent = parent;
-        name = Name;
-	}
+    class Node
+    {
+        public List<Node> nodes = new List<Node>();
+
+        public Node(Mesh mesh, Matrix4 transformParent, Node child)
+        {
+
+        }
+
+        public void CreateChild(Mesh mesh, Matrix4 transformParent, Node child)
+        {
+            Node Child = new Node(mesh, transformParent, child);
+            nodes.Add(Child);
+        }
+
+    }
 }
