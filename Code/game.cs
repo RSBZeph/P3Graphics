@@ -30,7 +30,8 @@ namespace Template_P3
         {
             // load teapot
             mesh = new Mesh("../../assets/teapot.obj");
-            floor = new Mesh("../../assets/floor.obj");
+            mesh.specularity = 20;
+            floor = new Mesh("../../assets/floor.obj");            
             // initialize stopwatch
             timer = new Stopwatch();
             timer.Reset();
