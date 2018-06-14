@@ -20,7 +20,7 @@ namespace Template_P3
         Stopwatch timer;                        // timer for measuring frame duration
         Shader shader;                          // shader to use for rendering
         Shader postproc;                        // shader to use for post processing
-        Texture wood;                           // texture to use for rendering
+        Texture wood, earth;                           // texture to use for rendering
         RenderTarget target;                    // intermediate render target
         ScreenQuad quad;                        // screen filling quad for post processing
         bool useRenderTarget = true;
@@ -41,7 +41,9 @@ namespace Template_P3
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
             postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
             // load a texture
-            wood = new Texture("../../assets/Earth.png");
+
+            earth = new Texture("../../assets/Earth.png");
+            wood = new Texture("../../assets/wood.jpg");
             // create the render target
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
@@ -85,7 +87,7 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-                teapot.Render(shader, transform, toWorld, wood);
+                teapot.Render(shader, transform, toWorld, earth);
                 floor.Render(shader, ftransform, toWorld, wood);
 
                 // render quad
