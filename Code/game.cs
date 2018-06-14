@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using OpenTK;
+using OpenTK.Input;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
@@ -11,6 +12,7 @@ namespace Template_P3 {
 class Game
 {
 	// member variables
+    KeyboardState KBS;
 	public Surface screen;					// background surface for printing etc.
 	public SceneGraph scenegraph;
     Mesh mesh, floor;						// a mesh to draw using OpenGL
@@ -28,7 +30,8 @@ class Game
 	public void Init()
 	{
 		// load teapot
-		mesh = new Mesh( "../../assets/teapot.obj" );
+        KBS = Keyboard.GetState();
+		mesh = new Mesh( "../../assets/MagikarpShiny1.obj" );
 		floor = new Mesh( "../../assets/floor.obj" );
 		// initialize stopwatch
 		timer = new Stopwatch();
