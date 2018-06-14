@@ -29,7 +29,7 @@ namespace Template_P3
         public void Init()
         {
             // load teapot
-            mesh = new Mesh("../../assets/teapot.obj");
+            mesh = new Mesh("../../assets/Magikarp.obj");
             mesh.specularity = 20;
             floor = new Mesh("../../assets/floor.obj");            
             // initialize stopwatch
