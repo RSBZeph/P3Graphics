@@ -4,9 +4,10 @@
 in vec2 uv;						// interpolated texture coordinates
 in vec4 normal;					// interpolated normal
 in vec4 worldPos;
+
+uniform float specularity;		// shininess for this current object //
 uniform sampler2D pixels;		// texture sampler
 uniform vec3 lightPos;			// hardcoded light //
-uniform float specularity;
 
 // shader output
 out vec4 outputColor;
@@ -25,7 +26,6 @@ void main()
 	float attenuation = 1.0f / (dist * dist);
 
 	//specular calculation
-	float specularity = 40; // lager = meer wit
 	vec3 incidenceVector = -L;
 	vec3 reflectionVector = reflect(incidenceVector, normal.xyz);
 	vec3 surfaceToCamera = normalize(vec3(0f, -4f, -15f) - worldPos.xyz);

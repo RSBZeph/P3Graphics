@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -68,6 +69,7 @@ namespace Template_P3
             // pass transform and toWorld to vertex shader
             GL.UniformMatrix4(shader.uniform_mview, false, ref transform);
             GL.UniformMatrix4(shader.uniform_2world, false, ref toWorld);
+            GL.Uniform1(shader.uniform_spec, specularity);
 
             // enable position, normal and uv attributes
             GL.EnableVertexAttribArray(shader.attribute_vpos);

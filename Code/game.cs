@@ -14,7 +14,7 @@ namespace Template_P3
         // member variables
         public Surface screen;                  // background surface for printing etc.
         public SceneGraph scenegraph;
-        Mesh mesh, floor;                       // a mesh to draw using OpenGL
+        Mesh teapot, floor;                     // a mesh to draw the teapot using OpenGL
         const float PI = 3.1415926535f;         // PI
         float a = 0f;                           // teapot rotation angle
         Stopwatch timer;                        // timer for measuring frame duration
@@ -29,9 +29,10 @@ namespace Template_P3
         public void Init()
         {
             // load teapot
-            mesh = new Mesh("../../assets/teapot.obj");
-            mesh.specularity = 20;
-            floor = new Mesh("../../assets/floor.obj");            
+            teapot = new Mesh("../../assets/teapot.obj");
+            teapot.specularity = 20;
+            floor = new Mesh("../../assets/floor.obj");      
+            floor.specularity = 70;
             // initialize stopwatch
             timer = new Stopwatch();
             timer.Reset();
@@ -45,7 +46,7 @@ namespace Template_P3
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
 
-            int lightID = GL.GetUniformLocation(shader.programID,"lightPos");            
+            int lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
             GL.UseProgram( shader.programID );
             GL.Uniform3(lightID,10.0f, 0.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
         }
@@ -84,7 +85,7 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-                mesh.Render(shader, transform, toWorld, wood);
+                teapot.Render(shader, transform, toWorld, wood);
                 floor.Render(shader, ftransform, toWorld, wood);
 
                 // render quad
@@ -94,7 +95,7 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen
-                mesh.Render(shader, transform, toWorld, wood);
+                teapot.Render(shader, transform, toWorld, wood);
                 floor.Render(shader, ftransform, toWorld, wood);
             }
         }
