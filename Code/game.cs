@@ -31,7 +31,7 @@ class Game
 	{
 		// load teapot
         KBS = Keyboard.GetState();
-		mesh = new Mesh( "../../assets/MagikarpShiny1.obj" );
+		mesh = new Mesh( "../../assets/Magikarp.obj" );
 		floor = new Mesh( "../../assets/floor.obj" );
 		// initialize stopwatch
 		timer = new Stopwatch();
