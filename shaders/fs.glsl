@@ -6,6 +6,7 @@ in vec4 normal;					// interpolated normal
 in vec4 worldPos;
 uniform sampler2D pixels;		// texture sampler
 uniform vec3 lightPos;			// hardcoded light //
+uniform float specularity;
 
 // shader output
 out vec4 outputColor;

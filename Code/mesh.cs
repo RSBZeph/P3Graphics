@@ -16,6 +16,7 @@ namespace Template_P3
         int vertexBufferId;                     // vertex buffer
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;                       // quad buffer
+        public float specularity = 60;          // lager = shinier
 
         // constructor
         public Mesh(string fileName)
