@@ -18,9 +18,19 @@ void main()
 	L = normalize( L );
 	vec3 lightColor = vec3( 1, 1, 1 );
 	lightColor = normalize( lightColor );
-	float brightness = 10;
+	float brightness = 20;
 	float ambientlight = 0.1f;
 	vec3 materialColor = texture( pixels, uv ).xyz;
 	float attenuation = 1.0f / (dist * dist);
-	outputColor = vec4( materialColor * (max( 0.0f, dot( L, normal.xyz ) ) * attenuation * lightColor * brightness * (1 - ambientlight) + ambientlight), 1 );
+
+	//specular calculation
+	float specularity = 40; // lager = meer wit
+	vec3 incidenceVector = -L;
+	vec3 reflectionVector = reflect(incidenceVector, normal.xyz);
+	vec3 surfaceToCamera = normalize(vec3(0f, -4f, -15f) - worldPos.xyz);
+	float cosAngle = min(0.0, dot(surfaceToCamera, reflectionVector));
+	float specularCoefficient = pow(cosAngle, specularity);
+	vec3 specularcolor = specularCoefficient * lightColor * brightness;
+
+	outputColor = vec4( specularcolor + materialColor * (max( 0.0f, dot( L, normal.xyz ) ) * attenuation * lightColor * brightness * (1 - ambientlight) + ambientlight), 1 );
 }

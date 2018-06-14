@@ -46,7 +46,7 @@ namespace Template_P3
 
             int lightID = GL.GetUniformLocation(shader.programID,"lightPos");            
             GL.UseProgram( shader.programID );
-            GL.Uniform3(lightID,0.0f, 10.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
+            GL.Uniform3(lightID,10.0f, 0.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
         }
 
         // tick for background surface
