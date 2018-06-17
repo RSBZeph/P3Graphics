@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using OpenTK;
-using OpenTK.Input;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
@@ -16,13 +15,13 @@ namespace Template_P3
         KeyboardState KBS;
         public Surface screen;                  // background surface for printing etc.
         public SceneGraph scenegraph;
-        Mesh mesh, floor;                       // a mesh to draw using OpenGL
+        Mesh teapot, floor;                     // a mesh to draw the teapot using OpenGL
         const float PI = 3.1415926535f;         // PI
         float a = 0f;                           // teapot rotation angle
         Stopwatch timer;                        // timer for measuring frame duration
         Shader shader;                          // shader to use for rendering
         Shader postproc;                        // shader to use for post processing
-        Texture wood;                           // texture to use for rendering
+        Texture wood, earth;                           // texture to use for rendering
         RenderTarget target;                    // intermediate render target
         ScreenQuad quad;                        // screen filling quad for post processing
         bool useRenderTarget = true;
@@ -45,9 +44,10 @@ namespace Template_P3
 
 
             // load teapot
-            mesh = new Mesh("../../assets/Magikarp.obj");
-            mesh.specularity = 20;
-            floor = new Mesh("../../assets/floor.obj");            
+            teapot = new Mesh("../../assets/teapot.obj");
+            teapot.specularity = 20;
+            floor = new Mesh("../../assets/floor.obj");      
+            floor.specularity = 70;
             // initialize stopwatch
             timer = new Stopwatch();
             timer.Reset();
@@ -56,13 +56,14 @@ namespace Template_P3
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
             postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
             // load a texture
-            wood = new Texture("../../assets/Earth.png");
+
+            earth = new Texture("../../assets/Earth.png");
+            wood = new Texture("../../assets/wood.jpg");
             // create the render target
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
 
-            
-            int lightID = GL.GetUniformLocation(shader.programID,"lightPos");            
+            int lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
             GL.UseProgram( shader.programID );
             GL.Uniform3(lightID,10.0f, 0.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
         }
@@ -142,7 +143,7 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-                mesh.Render(shader, transform, toWorld, wood);
+                teapot.Render(shader, transform, toWorld, earth);
                 floor.Render(shader, ftransform, toWorld, wood);
 
                 // render quad
@@ -152,7 +153,7 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen
-                mesh.Render(shader, transform, toWorld, wood);
+                teapot.Render(shader, transform, toWorld, wood);
                 floor.Render(shader, ftransform, toWorld, wood);
             }
         }
