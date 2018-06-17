@@ -8,12 +8,10 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Template_P3
 {
-
     class Game
     {
         // member variables
         public Surface screen;                  // background surface for printing etc.
-        public SceneGraph scenegraph;
         Mesh teapot, floor;                     // a mesh to draw the teapot using OpenGL
         const float PI = 3.1415926535f;         // PI
         float a = 0f;                           // teapot rotation angle
@@ -102,5 +100,4 @@ namespace Template_P3
             }
         }
     }
-
 } // namespace Template_P3
