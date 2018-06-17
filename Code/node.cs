@@ -40,9 +40,5 @@ namespace template_P3.Code
             foreach (Node child in children)
                 child.Render();
         }
-
-
-
-
     }
 }
