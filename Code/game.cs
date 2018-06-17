@@ -13,6 +13,7 @@ namespace Template_P3
     class Game
     {
         // member variables
+        KeyboardState KBS;
         public Surface screen;                  // background surface for printing etc.
         public SceneGraph scenegraph;
         Mesh mesh, floor;                       // a mesh to draw using OpenGL
@@ -25,10 +26,24 @@ namespace Template_P3
         RenderTarget target;                    // intermediate render target
         ScreenQuad quad;                        // screen filling quad for post processing
         bool useRenderTarget = true;
+        Matrix4 ftransform;
+        Matrix4 toWorld;
+        Matrix4 transform;
 
         // initialize
         public void Init()
         {
+            transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+            transform *= Matrix4.CreateTranslation(0, -4, -15);
+
+            ftransform = transform;
+            toWorld = transform;
+            ftransform *= Matrix4.CreateTranslation(0, -6, -15);
+            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+
+
+
             // load teapot
             mesh = new Mesh("../../assets/Magikarp.obj");
             mesh.specularity = 20;
@@ -46,6 +61,7 @@ namespace Template_P3
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
 
+            
             int lightID = GL.GetUniformLocation(shader.programID,"lightPos");            
             GL.UseProgram( shader.programID );
             GL.Uniform3(lightID,10.0f, 0.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
@@ -61,23 +77,64 @@ namespace Template_P3
         // tick for OpenGL rendering code
         public void RenderGL()
         {
+            
             // measure frame duration
             float frameDuration = timer.ElapsedMilliseconds;
             timer.Reset();
             timer.Start();
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+            
+            KBS = Keyboard.GetState();
+            if (KBS.IsKeyDown(Key.E))
+            {
+                transform *= Matrix4.CreateTranslation(0, 0.01f, 0);
+            }
+            if (KBS.IsKeyDown(Key.Q))
+            {
+                transform *= Matrix4.CreateTranslation(0, -0.01f, 0);
+            }
+            if (KBS.IsKeyDown(Key.A))
+            {
+                transform *= Matrix4.CreateTranslation(0.01f, 0, 0);
+            }
+            if (KBS.IsKeyDown(Key.D))
+            {
+                transform *= Matrix4.CreateTranslation(-0.01f, 0, 0);
+            }
+            if (KBS.IsKeyDown(Key.W))
+            {
+                transform *= Matrix4.CreateTranslation(0, 0, 0.01f);
+            }
+            if (KBS.IsKeyDown(Key.S))
+            {
+                transform *= Matrix4.CreateTranslation(0, 0, -0.01f);
+            }
+            if (KBS.IsKeyDown(Key.K))
+            {
+                transform *= Matrix4.CreateRotationX(0.01f);
+            }
+            if (KBS.IsKeyDown(Key.I))
+            {
+                transform *= Matrix4.CreateRotationX(-0.01f);
+            }
+            if (KBS.IsKeyDown(Key.J))
+            {
+                transform *= Matrix4.CreateRotationY(0.01f);
+            }
+            if (KBS.IsKeyDown(Key.L))
+            {
+                transform *= Matrix4.CreateRotationY(-0.01f);
+            }
             Matrix4 ftransform = transform;
             Matrix4 toWorld = transform;
-            transform *= Matrix4.CreateTranslation(0, -4, -15);
-            ftransform *= Matrix4.CreateTranslation(0, -6, -15);
-            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-            ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-
+            
             // update rotation
+
             a += 0.001f * frameDuration;
             if (a > 2 * PI) a -= 2 * PI;
+
+
 
             if (useRenderTarget)
             {
