@@ -25,19 +25,20 @@ class SceneGraph
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
 
-    public SceneGraph()
+    public void Init()
     {
-        earth = new Texture("../../assets/Earth.png");
-        wood = new Texture("../../assets/wood.jpg");
-        shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
-        teapot = new Mesh("../../assets/teapot.obj");
+        LoadTextures();
+        LoadMeshes();
         teapot.specularity = 20;
-        floor = new Mesh("../../assets/floor.obj");      
         floor.specularity = 70;
+
         shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
         postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
         
         quad = new ScreenQuad();
+        timer = new Stopwatch();
+        timer.Reset();
+        timer.Start();
 
         // create the render target
         target = new RenderTarget(screen.width, screen.height);
@@ -47,6 +48,18 @@ class SceneGraph
         GL.Uniform3(lightID,10.0f, 0.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
 
         root = new Node(shader,wood , teapot);
+    }
+
+    public void LoadMeshes()
+    {   
+        teapot = new Mesh("../../assets/teapot.obj");
+        floor = new Mesh("../../assets/floor.obj");
+    }
+
+    public void LoadTextures()
+    {
+        earth = new Texture("../../assets/Earth.png");
+        wood = new Texture("../../assets/wood.jpg");
     }
 
     public void Render()
