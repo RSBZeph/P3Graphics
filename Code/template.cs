@@ -22,6 +22,7 @@ public class OpenTKApp : GameWindow
 		ClientSize = new Size( 640, 400 );
 		game = new Game();
 		game.screen = new Surface( Width, Height );
+        game.scenegraph = new SceneGraph();
         game.scenegraph.screen = game.screen;
 		Sprite.target = game.scenegraph.screen;
 		screenID = game.screen.GenTexture();

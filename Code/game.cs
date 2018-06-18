@@ -18,7 +18,6 @@ namespace Template_P3
         // initialize
         public void Init()
         {
-            scenegraph = new SceneGraph();
             
         }
 
