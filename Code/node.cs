@@ -14,23 +14,21 @@ class Node
     Texture texture;
     Mesh mesh;
         
-    public Node(Matrix4 p, Shader s, Texture t, Mesh m, Matrix4 TW)
+    public Node(Shader s, Texture t, Mesh m)
     {
-        parentM = p;
         shader = s;
         texture = t;
         mesh = m;
         localM = mesh.LocalM;
-        ToWorld = TW;
     }
 
-    public void Render(Matrix4 parent)
+    public void Render(Matrix4 parentM, Matrix4 TW)
     {
-        newM = parent * localM;    
-        mesh.Render(shader, newM, ToWorld, texture);
+        newM = parentM * localM;    
+        mesh.Render(shader, newM, TW, texture);
         foreach(Node n in children)
         {            
-          n.Render(newM);            
+          n.Render(newM, TW);            
         }   
     }
 }
