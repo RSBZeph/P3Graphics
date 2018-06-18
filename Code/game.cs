@@ -19,6 +19,7 @@ namespace Template_P3
         public void Init()
         {
             scenegraph = new SceneGraph();
+            
         }
 
         // tick for background surface
