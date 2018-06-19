@@ -65,12 +65,12 @@ class SceneGraph
 
     void CreateChildren()
     {
-        Node teapotN = new Node(shader, earth, teapot); 
-        teapotN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
-        root.children.Add(teapotN);
-        Node floorN = new Node(shader, wood, floor);
-        floorN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,-2),new Vector4(0,0,1,0),new Vector4(0,0,0,1));
-        teapotN.children.Add(floorN);
+        //Node teapotN = new Node(shader, earth, teapot); 
+        //teapotN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
+        //root.children.Add(teapotN);
+        Node floorN = new Node(shader, earth, floor);
+        floorN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,-2),new Vector4(0,0,0,0),new Vector4(0,0,0,1));
+        root.children.Add(floorN);
     }
 
     public void Render()
