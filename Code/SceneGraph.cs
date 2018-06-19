@@ -11,7 +11,8 @@ using OpenTK.Graphics.OpenGL;
 
 class SceneGraph
 {
-    Node root;
+    Node root;                              // 'world' node
+    Node teapotN, floorN;                   // branches
     Texture wood, earth;                    // texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
@@ -23,6 +24,7 @@ class SceneGraph
     float a = 0f;                           // teapot rotation angle
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
+    Matrix4 transform, ftransform, ToWorld;
 
     public void Init()
     {
@@ -48,7 +50,7 @@ class SceneGraph
 
         root = new Node(shader,wood , teapot);
         root.localM = Matrix4.Identity;
-        //CreateChildren();        
+        CreateChildren();        
     }
 
     void LoadMeshes()
@@ -65,30 +67,36 @@ class SceneGraph
 
     void CreateChildren()
     {
-        Node teapotN = new Node(shader, earth, teapot); 
-        teapotN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-6),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
+        transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
+        ToWorld = transform;
+        transform *= Matrix4.CreateTranslation(0, -4, -15);
+        transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        ftransform = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), 0);
+
+        teapotN = new Node(shader, earth, teapot); 
+        teapotN.localM = transform;
         root.children.Add(teapotN);
-        Node floorN = new Node(shader, wood, floor);
-        floorN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,2),new Vector4(0,0,1,0),new Vector4(0,0,0,1));
+        floorN = new Node(shader, wood, floor);
+        floorN.localM = ftransform = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), 0);
         teapotN.children.Add(floorN);
     }
 
     public void Render()
     {
+            ToWorld = Matrix4.Identity;
+
+            transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+            transform *= Matrix4.CreateTranslation(0, -4, -15);
+            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        teapotN.localM = transform;
+            ftransform = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), a);
+        floorN.localM = ftransform;
             // measure frame duration
             float frameDuration = timer.ElapsedMilliseconds;
             timer.Reset();
             timer.Start();
 
-            // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-            Matrix4 ftransform = transform;
-            Matrix4 ToWorld = transform;
-            transform *= Matrix4.CreateTranslation(0, -4, -15);
-            ftransform *= Matrix4.CreateTranslation(0, -6, -15);
-            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-            ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-            
+            // prepare matrix for vertex shader            
 
             // update rotation
             a += 0.001f * frameDuration;
@@ -100,9 +108,10 @@ class SceneGraph
                 target.Bind();
 
                 // render scene to render target
-                //root.Render(ToWorld, ToWorld);
-                teapot.Render(shader, transform, ToWorld, earth);
-                floor.Render(shader, ftransform, ToWorld, wood);
+                foreach(Node n in root.children)
+                {
+                    n.Render(ToWorld, ToWorld);
+                }
 
                 // render quad
                 target.Unbind();
