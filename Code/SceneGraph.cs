@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Template_P3;
 using OpenTK;
-using OpenTK.Input;
 using System.Diagnostics;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -13,6 +12,7 @@ using OpenTK.Graphics.OpenGL;
 class SceneGraph
 {
     Node root;
+    Node teapotN, floorN;
     Texture wood, earth;                    // texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
@@ -24,16 +24,14 @@ class SceneGraph
     float a = 0f;                           // teapot rotation angle
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
-    Matrix4 cameraM;
-    KeyboardState KBS;
+    Matrix4 transform, ftransform, ToWorld = Matrix4.Identity;
 
     public void Init()
     {
-        cameraM = Matrix4.Identity;
         LoadTextures();
         LoadMeshes();
         teapot.specularity = 20;
-        floor.specularity = 70;
+        floor.specularity = 20;
 
         shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
         postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
@@ -48,9 +46,9 @@ class SceneGraph
 
         int lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
-        GL.Uniform3(lightID,10.0f, 0.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
+        GL.Uniform3(lightID,10.0f, -3.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
 
-        root = new Node(shader, wood, teapot);
+        root = new Node(shader, null, null, true);
         root.localM = Matrix4.Identity;
         CreateChildren();        
     }
@@ -69,94 +67,29 @@ class SceneGraph
 
     void CreateChildren()
     {
-        Node teapotN = new Node(shader, earth, teapot); 
-        teapotN.localM = Matrix4.Identity;//new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
+        teapotN = new Node(shader, wood, teapot);
         root.children.Add(teapotN);
-        Node floorN = new Node(shader, earth, floor);
-        floorN.localM = Matrix4.Identity;// new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,-2),new Vector4(0,0,0,0),new Vector4(0,0,0,1));
-        root.children.Add(floorN);
+        floorN = new Node(shader, wood, floor);
+        teapotN.children.Add(floorN);
     }
 
     public void Render()
     {
         // measure frame duration
-        float frameDuration = (float)timer.Elapsed.TotalSeconds;//ElapsedSeconds;
+        float frameDuration = timer.ElapsedMilliseconds;
         timer.Reset();
         timer.Start();
 
-        KBS = Keyboard.GetState();
-        if (KBS.IsKeyDown(Key.E))
-        {
-            cameraM *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);
-        }
-        if (KBS.IsKeyDown(Key.Q))
-        {
-            cameraM *= Matrix4.CreateTranslation(0, -(8f * frameDuration), 0);
-        }
-        if (KBS.IsKeyDown(Key.A))
-        {
-            cameraM *= Matrix4.CreateTranslation((8f * frameDuration), 0, 0);
-        }
-        if (KBS.IsKeyDown(Key.D))
-        {
-            cameraM *= Matrix4.CreateTranslation(-(8f * frameDuration), 0, 0);
-        }
-        if (KBS.IsKeyDown(Key.W))
-        {
-            cameraM *= Matrix4.CreateTranslation(0, 0, (8f * frameDuration));
-        }
-        if (KBS.IsKeyDown(Key.S))
-        {
-            cameraM *= Matrix4.CreateTranslation(0, 0, -(8f * frameDuration));
-        }
-        if (KBS.IsKeyDown(Key.K))
-        {
-            cameraM *= Matrix4.CreateRotationX((0.8f * frameDuration));
-        }
-        if (KBS.IsKeyDown(Key.I))
-        {
-            cameraM *= Matrix4.CreateRotationX(-(0.8f * frameDuration));
-        }
-        if (KBS.IsKeyDown(Key.J))
-        {
-            cameraM *= Matrix4.CreateRotationY((0.8f * frameDuration));
-        }
-        if (KBS.IsKeyDown(Key.L))
-        {
-            cameraM *= Matrix4.CreateRotationY(-(0.8f * frameDuration));
-        }
-        if (KBS.IsKeyDown(Key.U))
-        {
-            cameraM *= Matrix4.CreateRotationZ((0.8f * frameDuration));
-        }
-        if (KBS.IsKeyDown(Key.O))
-        {
-            cameraM *= Matrix4.CreateRotationZ(-(0.8f * frameDuration));
-        }
-
-        //Matrix4 ftransform = transform;transform;
         //prepare matrix for vertex shader
-        //Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-        //Matrix4 transform = new Matrix4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, -6), new Vector4(0, 0, 0, -15), new Vector4(0, 0, 0, 1));
-        //Matrix4 ToWorld = transform;
-        //transform *= Matrix4.CreateTranslation(0, -4, -15);
-        //ftransform *= Matrix4.CreateTranslation(0, -6, -15);
-        //transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-        Matrix4 ftransform = transform;
-        Matrix4 ToWorld = transform;
+        transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
         transform *= Matrix4.CreateTranslation(0, -4, -15);
-        transform *= cameraM;
-        ftransform *= Matrix4.CreateTranslation(0, -6, -15);
         transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        
+        teapotN.localM = transform;
 
+        //floorN.localM = ftransform;
 
         // update rotation
-        a += 1f * frameDuration;
-        //a = 0;
+        a += 0.001f * frameDuration;
         if (a > 2 * PI) a -= 2 * PI;
 
         if (useRenderTarget)
@@ -165,14 +98,7 @@ class SceneGraph
             target.Bind();
 
             // render scene to render target
-            foreach (Node n in root.children)
-            {
-                n.Render(transform, ToWorld);
-            }
-
-            //teapot.Render(shader, transform, ToWorld, earth);
-            //floor.Render(shader, ftransform, ToWorld, wood);
-            //root.Render(ToWorld, ToWorld);
+            root.Render(Matrix4.Identity);
 
             // render quad
             target.Unbind();
@@ -181,7 +107,7 @@ class SceneGraph
         else
         {
             // render scene directly to the screen
-            root.Render(ToWorld, ToWorld);
+            root.Render(Matrix4.Identity);
         }
     }
 }

@@ -14,22 +14,28 @@ class Node
     Shader shader;
     Texture texture;
     Mesh mesh;
+    bool root = false;
         
-    public Node(Shader s, Texture t, Mesh m)
+    public Node(Shader s, Texture t, Mesh m, bool Root = false)
     {
         shader = s;
         texture = t;
+        root = Root;
         mesh = m;
-        localM = mesh.LocalM;
+        if (!root)
+            localM = mesh.LocalM;
     }
 
-    public void Render(Matrix4 parentM, Matrix4 TW)
+    public void Render(Matrix4 parentM)
     {
-        newM = parentM * localM;    
-        mesh.Render(shader, newM, TW, texture);
+        newM = parentM * localM;
+        if (!root)
+        {            
+            mesh.Render(shader, newM, texture);
+        }
         foreach(Node n in children)
         {            
-          n.Render(newM, TW);            
+          n.Render(newM);            
         }   
     }
 }

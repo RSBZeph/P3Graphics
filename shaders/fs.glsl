@@ -16,12 +16,12 @@ out vec4 outputColor;
 void main()
 {
 	vec3 L = lightPos - worldPos.xyz;
-	float dist = L.length();
+	float dist = length(L);
 	L = normalize( L );
 	vec3 lightColor = vec3( 1, 1, 1 );
 	vec3 CamPos = vec3( 0f, -4f, -15f );
 	lightColor = normalize( lightColor );
-	float brightness = 20;
+	float brightness = 100;
 	float ambientlight = 0.1f;
 	vec3 materialColor = texture( pixels, uv ).xyz;
 	float attenuation = 1.0f / (dist * dist);
@@ -33,14 +33,12 @@ void main()
 	//specular calculation
 	vec3 incidenceVector = -L;
 	vec3 reflectionVector = reflect(incidenceVector, normal.xyz);
+	reflectionVector = normalize(reflectionVector);
 	vec3 surfaceToCamera = normalize(CamPos - worldPos.xyz);
-	float cosAngle = min(0.0, dot(surfaceToCamera, reflectionVector));
-	cosAngle *= -1;
+	float cosAngle = max(0.0, dot(surfaceToCamera, reflectionVector));
 	float specularCoefficient = pow(cosAngle, specularity);
-	vec3 specularcolor = specularCoefficient * lightColor * brightness;
+	vec3 specularcolor = specularCoefficient * lightColor;
 
 	outputColor = vec4( specularcolor + materialColor * (max( 0.0f, dot( L, normal.xyz ) ) * attenuation * lightColor * brightness * (1 - ambientlight) + ambientlight), 1 );
-	if (outputColor == vec4(0,0,0,1))
-	outputColor = vec4(1,0,0,1);
 	//outputColor = texture( pixels, uv ) + 0.5f * vec4( normal.xyz, 1 );
 }
