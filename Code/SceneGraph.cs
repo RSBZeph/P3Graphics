@@ -18,7 +18,7 @@ class SceneGraph
     Mesh teapot, floor;                     // a mesh to draw the teapot using OpenGL
     RenderTarget target;                    // intermediate render target
     ScreenQuad quad;                        // screen filling quad for post processing
-    Node floorN;
+    Node floorN, teapotN, teapot1;
     bool useRenderTarget = true;
     const float PI = 3.1415926535f;         // PI
     float a = 0f;                           // teapot rotation angle
@@ -67,9 +67,11 @@ class SceneGraph
 
     void CreateChildren()
     {
-        Node teapotN = new Node(shader, earth, teapot); 
-        teapotN.localM = Matrix4.Identity;//new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
+        teapotN = new Node(shader, earth, teapot); 
+        //teapotN.localM = Matrix4.Identity;//new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
         root.children.Add(teapotN);
+        teapot1 = new Node(shader, wood, teapot);
+        root.children.Add(teapot1);
         floorN = new Node(shader, earth, floor);
         //floorN.localM = Matrix4.Identity;// new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,-2),new Vector4(0,0,0,0),new Vector4(0,0,0,1));
         teapotN.children.Add(floorN);
@@ -101,8 +103,9 @@ class SceneGraph
         //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
         ftransform *= Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), a);
 
+        teapotN.localM = transform;
         floorN.localM = ftransform;
-
+        teapot1.localM = transform;
 
         // update rotation
         a += 0.001f * frameDuration;
@@ -116,7 +119,7 @@ class SceneGraph
             // render scene to render target
             foreach (Node n in root.children)
             {
-                n.Render(transform, ToWorld);
+                n.Render(ToWorld, ToWorld);
             }
 
             //teapot.Render(shader, transform, ToWorld, earth);
@@ -130,7 +133,7 @@ class SceneGraph
         else
         {
             // render scene directly to the screen
-            root.Render(ToWorld, ToWorld);
+            //root.Render(ToWorld, ToWorld);
         }
     }
 }
