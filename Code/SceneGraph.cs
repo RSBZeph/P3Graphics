@@ -24,14 +24,14 @@ class SceneGraph
     float a = 0f;                           // teapot rotation angle
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
-    Matrix4 transform, ftransform, ToWorld;
+    Matrix4 transform, ftransform, ToWorld = Matrix4.Identity;
 
     public void Init()
     {
         LoadTextures();
         LoadMeshes();
         teapot.specularity = 20;
-        floor.specularity = 70;
+        floor.specularity = 20;
 
         shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
         postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
@@ -46,7 +46,7 @@ class SceneGraph
 
         int lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
-        GL.Uniform3(lightID,10.0f, 0.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
+        GL.Uniform3(lightID,10.0f, -3.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
 
         root = new Node(shader, null, null, true);
         root.localM = Matrix4.Identity;
@@ -67,16 +67,14 @@ class SceneGraph
 
     void CreateChildren()
     {
-        teapotN = new Node(shader, earth, teapot);
+        teapotN = new Node(shader, wood, teapot);
         root.children.Add(teapotN);
-        floorN = new Node(shader, earth, floor);
+        floorN = new Node(shader, wood, floor);
         teapotN.children.Add(floorN);
     }
 
     public void Render()
     {
-        Matrix4 ToWorld = Matrix4.Identity;
-
         // measure frame duration
         float frameDuration = timer.ElapsedMilliseconds;
         timer.Reset();
@@ -100,11 +98,7 @@ class SceneGraph
             target.Bind();
 
             // render scene to render target
-            root.Render(ToWorld, ToWorld);
-
-            //teapot.Render(shader, transform, ToWorld, earth);
-            //floor.Render(shader, ftransform, ToWorld, wood);
-            //root.Render(ToWorld, ToWorld);
+            root.Render(Matrix4.Identity);
 
             // render quad
             target.Unbind();
@@ -113,7 +107,7 @@ class SceneGraph
         else
         {
             // render scene directly to the screen
-            root.Render(ToWorld, ToWorld);
+            root.Render(Matrix4.Identity);
         }
     }
 }

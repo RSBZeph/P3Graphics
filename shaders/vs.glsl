@@ -10,14 +10,13 @@ out vec4 normal;			// transformed vertex normal
 out vec2 uv;
 out vec4 worldPos;
 
-uniform mat4 transform;
 uniform mat4 toWorld;
  
 // vertex shader
 void main()
 {
 	// transform vertex using supplied matrix
-	gl_Position = transform * vec4(vPosition, 1.0);
+	gl_Position = toWorld * vec4(vPosition, 1.0);
 	worldPos = toWorld * vec4( vPosition, 1.0f );
 	normal = toWorld * vec4( vNormal, 0.0f );
 

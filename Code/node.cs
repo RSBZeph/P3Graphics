@@ -26,16 +26,16 @@ class Node
             localM = mesh.LocalM;
     }
 
-    public void Render(Matrix4 parentM, Matrix4 TW)
+    public void Render(Matrix4 parentM)
     {
-        newM = parentM * localM;    
+        newM = parentM * localM;
         if (!root)
         {            
-            mesh.Render(shader, newM, TW, texture);
+            mesh.Render(shader, newM, texture);
         }
         foreach(Node n in children)
         {            
-          n.Render(newM, TW);            
+          n.Render(newM);            
         }   
     }
 }

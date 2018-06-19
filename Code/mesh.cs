@@ -18,7 +18,7 @@ namespace Template_P3
         int vertexBufferId;                     // vertex buffer
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;                       // quad buffer
-        public float specularity = 60;          // lager = shinier
+        public float specularity = 100;          // lager = shinier
 
         // constructor
         public Mesh(string fileName)
@@ -50,7 +50,7 @@ namespace Template_P3
         }
 
         // render the mesh using the supplied shader and matrix
-        public void Render(Shader shader, Matrix4 transform, Matrix4 toWorld, Texture texture)
+        public void Render(Shader shader, Matrix4 toWorld, Texture texture)
         {
             // on first run, prepare buffers
             Prepare(shader);
@@ -68,7 +68,6 @@ namespace Template_P3
             GL.UseProgram(shader.programID);
 
             // pass transform and toWorld to vertex shader
-            GL.UniformMatrix4(shader.uniform_mview, false, ref transform);
             GL.UniformMatrix4(shader.uniform_2world, false, ref toWorld);
             GL.Uniform1(shader.uniform_spec, specularity);
 
