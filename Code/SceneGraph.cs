@@ -48,7 +48,7 @@ class SceneGraph
 
         root = new Node(shader, wood, teapot);
         root.localM = Matrix4.Identity;
-        CreateChildren();
+        //CreateChildren();        
     }
 
     void LoadMeshes()
