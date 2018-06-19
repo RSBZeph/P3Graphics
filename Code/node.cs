@@ -9,7 +9,8 @@ using Template_P3;
 class Node
 {
     public List<Node> children = new List<Node>();
-    Matrix4 parentM, localM, newM, ToWorld;
+    Matrix4 newM;
+    public Matrix4 localM;
     Shader shader;
     Texture texture;
     Mesh mesh;
