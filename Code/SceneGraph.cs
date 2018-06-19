@@ -69,12 +69,12 @@ class SceneGraph
     {
         teapotN = new Node(shader, earth, teapot); 
         //teapotN.localM = Matrix4.Identity;//new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
-        root.children.Add(teapotN);
+        //root.children.Add(teapotN);
         teapot1 = new Node(shader, wood, teapot);
         root.children.Add(teapot1);
         floorN = new Node(shader, earth, floor);
         //floorN.localM = Matrix4.Identity;// new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,-2),new Vector4(0,0,0,0),new Vector4(0,0,0,1));
-        teapotN.children.Add(floorN);
+        //teapotN.children.Add(floorN);
     }
 
     public void Render()
@@ -103,9 +103,9 @@ class SceneGraph
         //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
         ftransform *= Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), a);
 
-        teapotN.localM = transform;
-        floorN.localM = ftransform;
-        teapot1.localM = transform;
+        // teapotN.localM = transform;
+        //floorN.localM = ftransform;
+        teapot1.localM = transform;// += Matrix4.CreateTranslation(-1, -1, -1);
 
         // update rotation
         a += 0.001f * frameDuration;
