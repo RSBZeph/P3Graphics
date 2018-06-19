@@ -85,56 +85,57 @@ class SceneGraph
         KBS = Keyboard.GetState();
         if (KBS.IsKeyDown(Key.E))
         {
-            ToWorld *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);
+            cameraM *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);
         }
         if (KBS.IsKeyDown(Key.Q))
         {
-            ToWorld *= Matrix4.CreateTranslation(0, -(8f * frameDuration), 0);
+            cameraM *= Matrix4.CreateTranslation(0, -(8f * frameDuration), 0);
         }
         if (KBS.IsKeyDown(Key.A))
         {
-            ToWorld *= Matrix4.CreateTranslation((8f * frameDuration), 0, 0);
+            cameraM *= Matrix4.CreateTranslation((8f * frameDuration), 0, 0);
         }
         if (KBS.IsKeyDown(Key.D))
         {
-            ToWorld *= Matrix4.CreateTranslation(-(8f * frameDuration), 0, 0);
+            cameraM *= Matrix4.CreateTranslation(-(8f * frameDuration), 0, 0);
         }
         if (KBS.IsKeyDown(Key.W))
         {
-            ToWorld *= Matrix4.CreateTranslation(0, 0, (8f * frameDuration));
+            cameraM *= Matrix4.CreateTranslation(0, 0, (8f * frameDuration));
         }
         if (KBS.IsKeyDown(Key.S))
         {
-            ToWorld *= Matrix4.CreateTranslation(0, 0, -(8f * frameDuration));
+            cameraM *= Matrix4.CreateTranslation(0, 0, -(8f * frameDuration));
         }
         if (KBS.IsKeyDown(Key.K))
         {
-            ToWorld *= Matrix4.CreateRotationX((0.8f * frameDuration));
+            cameraM *= Matrix4.CreateRotationX((0.8f * frameDuration));
         }
         if (KBS.IsKeyDown(Key.I))
         {
-            ToWorld *= Matrix4.CreateRotationX(-(0.8f * frameDuration));
+            cameraM *= Matrix4.CreateRotationX(-(0.8f * frameDuration));
         }
         if (KBS.IsKeyDown(Key.J))
         {
-            ToWorld *= Matrix4.CreateRotationY((0.8f * frameDuration));
+            cameraM *= Matrix4.CreateRotationY((0.8f * frameDuration));
         }
         if (KBS.IsKeyDown(Key.L))
         {
-            ToWorld *= Matrix4.CreateRotationY(-(0.8f * frameDuration));
+            cameraM *= Matrix4.CreateRotationY(-(0.8f * frameDuration));
         }
         if (KBS.IsKeyDown(Key.U))
         {
-                ToWorld *= Matrix4.CreateRotationZ((0.8f * frameDuration));
+            cameraM *= Matrix4.CreateRotationZ((0.8f * frameDuration));
         }
         if (KBS.IsKeyDown(Key.O))
         {
-            ToWorld *= Matrix4.CreateRotationZ(-(0.8f * frameDuration));
+            cameraM *= Matrix4.CreateRotationZ(-(0.8f * frameDuration));
         }
 
         //prepare matrix for vertex shader
-        transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+        Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
         transform *= Matrix4.CreateTranslation(0, -4, -15);
+        transform *= cameraM;
         transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
         teapotN.localM = transform;
 
