@@ -110,6 +110,7 @@ class SceneGraph
         if (KBS.IsKeyDown(Key.K))
         {
             ToWorld *= Matrix4.CreateRotationX((0.8f * frameDuration));
+        }
         if (KBS.IsKeyDown(Key.I))
         {
             ToWorld *= Matrix4.CreateRotationX(-(0.8f * frameDuration));
