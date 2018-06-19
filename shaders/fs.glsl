@@ -18,7 +18,7 @@ void main()
 	vec3 L = lightPos - worldPos.xyz;
 	float dist = L.length();
 	L = normalize( L );
-	vec3 lightColor = vec3( 5, 1, 1 );
+	vec3 lightColor = vec3( 1, 1, 1 );
 	lightColor = normalize( lightColor );
 	float brightness = 20;
 	float ambientlight = 0.1f;
