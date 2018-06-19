@@ -46,7 +46,7 @@ class SceneGraph
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,10.0f, 0.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
 
-        root = new Node(shader,wood , teapot);
+        root = new Node(shader, wood, teapot);
         root.localM = Matrix4.Identity;
         CreateChildren();
     }
@@ -66,50 +66,55 @@ class SceneGraph
     void CreateChildren()
     {
         Node teapotN = new Node(shader, earth, teapot); 
-        teapotN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-6),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
+        teapotN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
         root.children.Add(teapotN);
         Node floorN = new Node(shader, wood, floor);
-        floorN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,2),new Vector4(0,0,1,0),new Vector4(0,0,0,1));
+        floorN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,-2),new Vector4(0,0,1,0),new Vector4(0,0,0,1));
         teapotN.children.Add(floorN);
     }
 
     public void Render()
     {
-            // measure frame duration
-            float frameDuration = timer.ElapsedMilliseconds;
-            timer.Reset();
-            timer.Start();
+        // measure frame duration
+        float frameDuration = timer.ElapsedMilliseconds;
+        timer.Reset();
+        timer.Start();
 
-            // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-            Matrix4 ftransform = transform;
-            Matrix4 ToWorld = transform;
-            //transform *= Matrix4.CreateTranslation(0, -4, -15);
-            //ftransform *= Matrix4.CreateTranslation(0, -6, -15);
-            //transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-            //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-            
+        //Matrix4 ftransform = transform;transform;
+        //prepare matrix for vertex shader
+        //Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
+        Matrix4 transform = new Matrix4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, -6), new Vector4(0, 0, 0, -15), new Vector4(0, 0, 0, 1));
+        Matrix4 ToWorld = transform;
+        transform *= Matrix4.CreateTranslation(0, -4, -15);
+        //ftransform *= Matrix4.CreateTranslation(0, -6, -15);
+        transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
-            // update rotation
-            a += 0.001f * frameDuration;
-            if (a > 2 * PI) a -= 2 * PI;
 
-            if (useRenderTarget)
+        // update rotation
+        a += 0.001f * frameDuration;
+        if (a > 2 * PI) a -= 2 * PI;
+
+        if (useRenderTarget)
+        {
+            // enable render target
+            target.Bind();
+
+            // render scene to render target
+            foreach (Node n in root.children)
             {
-                // enable render target
-                target.Bind();
-
-                // render scene to render target
-                root.Render(ToWorld, ToWorld);
-
-                // render quad
-                target.Unbind();
-                quad.Render(postproc, target.GetTextureID());
+                n.Render(transform, ToWorld);
             }
-            else
-            {
-                // render scene directly to the screen
-                root.Render(ToWorld, ToWorld);
-            }
+            //root.Render(ToWorld, ToWorld);
+
+            // render quad
+            target.Unbind();
+            quad.Render(postproc, target.GetTextureID());
+        }
+        else
+        {
+            // render scene directly to the screen
+            root.Render(ToWorld, ToWorld);
+        }
     }
 }
