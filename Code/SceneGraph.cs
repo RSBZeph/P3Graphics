@@ -31,7 +31,7 @@ class SceneGraph
         LoadTextures();
         LoadMeshes();
         teapot.specularity = 20;
-        floor.specularity = 20;
+        floor.specularity = 80;
 
         shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
         postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
@@ -46,7 +46,7 @@ class SceneGraph
 
         int lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
-        GL.Uniform3(lightID,10.0f, -3.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
+        GL.Uniform3(lightID,10.0f, 0.0f, 10.0f); //20x20x20 worldspace, telkens van -10 tot 10, voorwerp rond (0, 0, 0), -z is van de camera af
 
         root = new Node(shader, null, null, true);
         root.localM = Matrix4.Identity;
@@ -98,7 +98,7 @@ class SceneGraph
             target.Bind();
 
             // render scene to render target
-            root.Render(Matrix4.Identity);
+            root.Render(ToWorld);
 
             // render quad
             target.Unbind();

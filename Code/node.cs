@@ -9,7 +9,7 @@ using Template_P3;
 class Node
 {
     public List<Node> children = new List<Node>();
-    Matrix4 newM;
+    Matrix4 ToWorld;
     public Matrix4 localM;
     Shader shader;
     Texture texture;
@@ -28,14 +28,14 @@ class Node
 
     public void Render(Matrix4 parentM)
     {
-        newM = parentM * localM;
+        ToWorld = parentM * localM;
         if (!root)
         {            
             mesh.Render(shader, newM, texture);
         }
         foreach(Node n in children)
         {            
-          n.Render(newM);            
+          n.Render(ToWorld);            
         }   
     }
 }
