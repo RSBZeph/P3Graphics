@@ -65,9 +65,9 @@ class SceneGraph
 
     void CreateChildren()
     {
-        //Node teapotN = new Node(shader, earth, teapot); 
-        //teapotN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
-        //root.children.Add(teapotN);
+        Node teapotN = new Node(shader, earth, teapot); 
+        teapotN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
+        root.children.Add(teapotN);
         Node floorN = new Node(shader, earth, floor);
         floorN.localM = new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,-2),new Vector4(0,0,0,0),new Vector4(0,0,0,1));
         root.children.Add(floorN);
@@ -83,12 +83,20 @@ class SceneGraph
         //Matrix4 ftransform = transform;transform;
         //prepare matrix for vertex shader
         //Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-        Matrix4 transform = new Matrix4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, -6), new Vector4(0, 0, 0, -15), new Vector4(0, 0, 0, 1));
+        //Matrix4 transform = new Matrix4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, -6), new Vector4(0, 0, 0, -15), new Vector4(0, 0, 0, 1));
+        //Matrix4 ToWorld = transform;
+        //transform *= Matrix4.CreateTranslation(0, -4, -15);
+        //ftransform *= Matrix4.CreateTranslation(0, -6, -15);
+        //transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+
+        Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+        Matrix4 ftransform = transform;
         Matrix4 ToWorld = transform;
         transform *= Matrix4.CreateTranslation(0, -4, -15);
-        //ftransform *= Matrix4.CreateTranslation(0, -6, -15);
+        ftransform *= Matrix4.CreateTranslation(0, -6, -15);
         transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
 
         // update rotation
