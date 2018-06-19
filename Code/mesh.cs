@@ -14,6 +14,7 @@ namespace Template_P3
         public ObjVertex[] vertices;            // vertex positions, model space
         public ObjTriangle[] triangles;         // triangles (3 vertex indices)
         public ObjQuad[] quads;                 // quads (4 vertex indices)
+        public Matrix4 LocalM = Matrix4.Identity;// modelview
         int vertexBufferId;                     // vertex buffer
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;                       // quad buffer

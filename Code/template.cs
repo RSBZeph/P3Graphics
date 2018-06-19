@@ -24,7 +24,7 @@ public class OpenTKApp : GameWindow
 		game.screen = new Surface( Width, Height );
 		Sprite.target = game.screen;
 		screenID = game.screen.GenTexture();
-		game.Init();
+		game.Init();        
 	}
 	protected override void OnUnload( EventArgs e )
 	{
