@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Template_P3;
 using OpenTK;
+using OpenTK.Input;
 using System.Diagnostics;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -24,7 +25,8 @@ class SceneGraph
     float a = 0f;                           // teapot rotation angle
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
-    Matrix4 transform, ftransform, ToWorld = Matrix4.Identity;
+    Matrix4 transform, ftransform, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
+    KeyboardState KBS;
 
     public void Init()
     {
@@ -76,9 +78,58 @@ class SceneGraph
     public void Render()
     {
         // measure frame duration
-        float frameDuration = timer.ElapsedMilliseconds;
+        float frameDuration = (float)timer.Elapsed.TotalSeconds;//timer.ElapsedMilliseconds;
         timer.Reset();
         timer.Start();
+
+        KBS = Keyboard.GetState();
+        if (KBS.IsKeyDown(Key.E))
+        {
+            ToWorld *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);
+        }
+        if (KBS.IsKeyDown(Key.Q))
+        {
+            ToWorld *= Matrix4.CreateTranslation(0, -(8f * frameDuration), 0);
+        }
+        if (KBS.IsKeyDown(Key.A))
+        {
+            ToWorld *= Matrix4.CreateTranslation((8f * frameDuration), 0, 0);
+        }
+        if (KBS.IsKeyDown(Key.D))
+        {
+            ToWorld *= Matrix4.CreateTranslation(-(8f * frameDuration), 0, 0);
+        }
+        if (KBS.IsKeyDown(Key.W))
+        {
+            ToWorld *= Matrix4.CreateTranslation(0, 0, (8f * frameDuration));
+        }
+        if (KBS.IsKeyDown(Key.S))
+        {
+            ToWorld *= Matrix4.CreateTranslation(0, 0, -(8f * frameDuration));
+        }
+        if (KBS.IsKeyDown(Key.K))
+        {
+            ToWorld *= Matrix4.CreateRotationX((0.8f * frameDuration));
+        if (KBS.IsKeyDown(Key.I))
+        {
+            ToWorld *= Matrix4.CreateRotationX(-(0.8f * frameDuration));
+        }
+        if (KBS.IsKeyDown(Key.J))
+        {
+            ToWorld *= Matrix4.CreateRotationY((0.8f * frameDuration));
+        }
+        if (KBS.IsKeyDown(Key.L))
+        {
+            ToWorld *= Matrix4.CreateRotationY(-(0.8f * frameDuration));
+        }
+        if (KBS.IsKeyDown(Key.U))
+        {
+                ToWorld *= Matrix4.CreateRotationZ((0.8f * frameDuration));
+        }
+        if (KBS.IsKeyDown(Key.O))
+        {
+            ToWorld *= Matrix4.CreateRotationZ(-(0.8f * frameDuration));
+        }
 
         //prepare matrix for vertex shader
         transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
@@ -89,7 +140,8 @@ class SceneGraph
         //floorN.localM = ftransform;
 
         // update rotation
-        a += 0.001f * frameDuration;
+        //a += 1f * frameDuration;
+        a = 0;
         if (a > 2 * PI) a -= 2 * PI;
 
         if (useRenderTarget)

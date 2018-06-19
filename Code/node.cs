@@ -31,7 +31,7 @@ class Node
         ToWorld = parentM * localM;
         if (!root)
         {            
-            mesh.Render(shader, newM, texture);
+            mesh.Render(shader, ToWorld, texture);
         }
         foreach(Node n in children)
         {            
