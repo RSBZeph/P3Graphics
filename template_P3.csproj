@@ -66,8 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\game.cs" />
-    <Compile Include="Code\Light.cs" />
+    <Compile Include="Code\game.cs" />   
     <Compile Include="Code\mesh.cs" />
     <Compile Include="Code\meshLoader.cs" />
     <Compile Include="Code\Node.cs" />

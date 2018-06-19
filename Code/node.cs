@@ -6,43 +6,30 @@ using System.Text;
 using System.Threading.Tasks;
 using Template_P3;
 
-
-namespace template_P3.Code
+class Node
 {
-    class Node
+    public List<Node> children = new List<Node>();
+    Matrix4 newM;
+    public Matrix4 localM;
+    Shader shader;
+    Texture texture;
+    Mesh mesh;
+        
+    public Node(Shader s, Texture t, Mesh m)
     {
-        public List<Node> children = new List<Node>();
+        shader = s;
+        texture = t;
+        mesh = m;
+        localM = mesh.LocalM;
+    }
 
-        public Node(Mesh mesh, Matrix4 transformParent, Node child)
-        {
-
-        }
-
-        public void CreateChild(Node Child)
-        {
-            //Node Child = new Node(mesh, transformParent, child);
-            children.Add(Child);
-        }
-
-        public void Input()
-        {
-            foreach (Node child in children)
-                child.Input();
-        }
-
-        public void Update()
-        {
-            foreach (Node child in children)
-                child.Update();
-        }
-        public void Render()
-        {
-            foreach (Node child in children)
-                child.Render();
-        }
-
-
-
-
+    public void Render(Matrix4 parentM, Matrix4 TW)
+    {
+        newM = parentM * localM;    
+        mesh.Render(shader, newM, TW, texture);
+        foreach(Node n in children)
+        {            
+          n.Render(newM, TW);            
+        }   
     }
 }

@@ -13,6 +13,7 @@ namespace Template_P3
         public int attribute_vuvs;
         public int uniform_mview;
         public int uniform_2world;
+        public int uniform_spec;
 
         // constructor
         public Shader(String vertexShader, String fragmentShader)
@@ -30,6 +31,7 @@ namespace Template_P3
             attribute_vuvs = GL.GetAttribLocation(programID, "vUV");
             uniform_mview = GL.GetUniformLocation(programID, "transform");
             uniform_2world = GL.GetUniformLocation(programID, "toWorld");
+            uniform_spec = GL.GetUniformLocation(programID, "specularity");
         }
 
         // loading shaders

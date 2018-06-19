@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -13,6 +14,7 @@ namespace Template_P3
         public ObjVertex[] vertices;            // vertex positions, model space
         public ObjTriangle[] triangles;         // triangles (3 vertex indices)
         public ObjQuad[] quads;                 // quads (4 vertex indices)
+        public Matrix4 LocalM = Matrix4.Identity;// modelview
         int vertexBufferId;                     // vertex buffer
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;                       // quad buffer
@@ -68,6 +70,7 @@ namespace Template_P3
             // pass transform and toWorld to vertex shader
             GL.UniformMatrix4(shader.uniform_mview, false, ref transform);
             GL.UniformMatrix4(shader.uniform_2world, false, ref toWorld);
+            GL.Uniform1(shader.uniform_spec, specularity);
 
             // enable position, normal and uv attributes
             GL.EnableVertexAttribArray(shader.attribute_vpos);
