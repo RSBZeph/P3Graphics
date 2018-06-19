@@ -48,7 +48,7 @@ class SceneGraph
 
         root = new Node(shader,wood , teapot);
         root.localM = Matrix4.Identity;
-        CreateChildren();
+        //CreateChildren();        
     }
 
     void LoadMeshes()
@@ -81,13 +81,13 @@ class SceneGraph
             timer.Start();
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
+            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
             Matrix4 ftransform = transform;
             Matrix4 ToWorld = transform;
-            //transform *= Matrix4.CreateTranslation(0, -4, -15);
-            //ftransform *= Matrix4.CreateTranslation(0, -6, -15);
-            //transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-            //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            transform *= Matrix4.CreateTranslation(0, -4, -15);
+            ftransform *= Matrix4.CreateTranslation(0, -6, -15);
+            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
             
 
             // update rotation
@@ -100,7 +100,9 @@ class SceneGraph
                 target.Bind();
 
                 // render scene to render target
-                root.Render(ToWorld, ToWorld);
+                //root.Render(ToWorld, ToWorld);
+                teapot.Render(shader, transform, ToWorld, earth);
+                floor.Render(shader, ftransform, ToWorld, wood);
 
                 // render quad
                 target.Unbind();
