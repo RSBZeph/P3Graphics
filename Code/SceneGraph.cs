@@ -18,11 +18,13 @@ class SceneGraph
     Mesh teapot, floor;                     // a mesh to draw the teapot using OpenGL
     RenderTarget target;                    // intermediate render target
     ScreenQuad quad;                        // screen filling quad for post processing
+    Node floorN;
     bool useRenderTarget = true;
     const float PI = 3.1415926535f;         // PI
     float a = 0f;                           // teapot rotation angle
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
+    Matrix4 ftransform, ToWorld, transform;
 
     public void Init()
     {
@@ -68,9 +70,9 @@ class SceneGraph
         Node teapotN = new Node(shader, earth, teapot); 
         teapotN.localM = Matrix4.Identity;//new Matrix4(new Vector4(1,0,0,0),new Vector4(0,1,0,-4),new Vector4(0,0,0,-15),new Vector4(0,0,0,1));
         root.children.Add(teapotN);
-        Node floorN = new Node(shader, earth, floor);
-        floorN.localM = Matrix4.Identity;// new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,-2),new Vector4(0,0,0,0),new Vector4(0,0,0,1));
-        root.children.Add(floorN);
+        floorN = new Node(shader, earth, floor);
+        //floorN.localM = Matrix4.Identity;// new Matrix4(new Vector4(1,0,0,0),new Vector4(0,0,0,-2),new Vector4(0,0,0,0),new Vector4(0,0,0,1));
+        teapotN.children.Add(floorN);
     }
 
     public void Render()
@@ -90,13 +92,16 @@ class SceneGraph
         //transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
         //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
-        Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-        Matrix4 ftransform = transform;
-        Matrix4 ToWorld = transform;
+        transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+        
+        ToWorld = transform;
         transform *= Matrix4.CreateTranslation(0, -4, -15);
-        ftransform *= Matrix4.CreateTranslation(0, -6, -15);
+        //ftransform *= Matrix4.CreateTranslation(0, -6, -15);
         transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        //ftransform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        ftransform *= Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), a);
+
+        floorN.localM = ftransform;
 
 
         // update rotation
