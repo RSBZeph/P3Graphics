@@ -28,7 +28,7 @@ class SceneGraph
     Stopwatch timer;                        // timer for measuring frame duration
     Matrix4 transform, ftransform, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
     KeyboardState KBS;
-    Vector3 lightpos3 = new Vector3(10,0,10);
+    Vector3 lightpos3 = new Vector3(7, 2, 0);
 
     public void Init()
     {
@@ -92,11 +92,14 @@ class SceneGraph
         transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
         teapotN.localM = transform;
 
-        ToWorld = Matrix4.Identity * cameraM;
+        ToWorld = cameraM;
 
-        Matrix4 lightposM = new Matrix4(new Vector4(lightpos3.X,0,0,0), new Vector4(0,lightpos3.Y,0,0), new Vector4(0,0,lightpos3.Z,0), new Vector4(0,0,0,1));
+        Matrix4 lightposM = Matrix4.CreateTranslation(lightpos3);
+        lightposM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
         lightposM = (ToWorld * lightposM);
-        Vector3 newlightpos3 = new Vector3(lightposM.M11, lightposM.M22, lightposM.M33);
+        Vector3 newlightpos3 = lightposM.Row3.Xyz;
+        lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
+        GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,newlightpos3);
 
         //floorN.localM = ftransform;

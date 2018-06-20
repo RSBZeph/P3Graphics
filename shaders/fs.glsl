@@ -21,7 +21,7 @@ void main()
 	vec3 lightColor = vec3( 1, 1, 1 );
 	vec3 CamPos = vec3( 0f, -4f, -15f );
 	lightColor = normalize( lightColor );
-	float brightness = 100;
+	float brightness = 200;
 	float ambientlight = 0.1f;
 	vec3 materialColor = texture( pixels, uv ).xyz;
 	float attenuation = 1.0f / (dist * dist);
