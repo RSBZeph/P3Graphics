@@ -26,7 +26,7 @@ class SceneGraph
     int lightID;
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
-    Matrix4 transform, ftransform, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
+    Matrix4 ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
     KeyboardState KBS;
     Vector3 lightpos3 = new Vector3(7, 2, 0);
 
@@ -95,8 +95,9 @@ class SceneGraph
         ToWorld = cameraM;
 
         Matrix4 lightposM = Matrix4.CreateTranslation(lightpos3);
-        lightposM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
         lightposM = (ToWorld * lightposM);
+        lightposM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+       
         Vector3 newlightpos3 = lightposM.Row3.Xyz;
         lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
@@ -105,7 +106,7 @@ class SceneGraph
         //floorN.localM = ftransform;
 
         // update rotation
-        //a += 1f * frameDuration;
+        a += 1f * frameDuration;
         a = 0;
         if (a > 2 * PI) 
             a -= 2 * PI;
@@ -129,6 +130,7 @@ class SceneGraph
         }
     }
 
+    // all the controls for the camera
     void CameraControls(float frameDuration)
         {
             KBS = Keyboard.GetState();
