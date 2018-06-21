@@ -50,7 +50,7 @@ namespace Template_P3
         }
 
         // render the mesh using the supplied shader and matrix
-        public void Render(Shader shader, Matrix4 toWorld, Texture texture)
+        public void Render(Shader shader, Matrix4 toWorld, Matrix4 cameraM, Texture texture)
         {
             // on first run, prepare buffers
             Prepare(shader);
@@ -70,6 +70,8 @@ namespace Template_P3
             // pass transform and toWorld to vertex shader
             GL.UniformMatrix4(shader.uniform_2world, false, ref toWorld);
             GL.Uniform1(shader.uniform_spec, specularity);
+
+            GL.UniformMatrix4(shader.uniform_mview, false, ref cameraM);
 
             // enable position, normal and uv attributes
             GL.EnableVertexAttribArray(shader.attribute_vpos);

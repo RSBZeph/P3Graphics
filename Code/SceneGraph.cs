@@ -23,12 +23,12 @@ class SceneGraph
     bool useRenderTarget = true;
     const float PI = 3.1415926535f;         // PI
     float a = 0f;                           // teapot rotation angle
-    int lightID;
+    int lightID, camID;
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
     Matrix4 transform, ftransform, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
     KeyboardState KBS;
-    Vector3 lightpos3 = new Vector3(7, 2, 0);
+    Vector3 lightpos3 = new Vector3(7, 2, 5);
 
     public void Init()
     {
@@ -48,13 +48,21 @@ class SceneGraph
         // create the render target
         target = new RenderTarget(screen.width, screen.height);
 
+        camID = GL.GetUniformLocation(shader.programID, "campos");
+        GL.UseProgram(shader.programID);
+        GL.Uniform3(camID, 0,0,0);
+
         lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,lightpos3); //-z is van de camera af
 
         root = new Node(shader, null, null, true);
         root.localM = Matrix4.Identity;
-        CreateChildren();        
+        CreateChildren(); 
+        
+        cameraM = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
+        cameraM *= Matrix4.CreateTranslation(0, -4, -15);
+        cameraM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
     }
 
     void LoadMeshes()
@@ -87,22 +95,19 @@ class SceneGraph
         CameraControls(frameDuration);
 
         //prepare matrix for vertex shader
-        Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-        transform *= Matrix4.CreateTranslation(0, -4, -15);
-        transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        teapotN.localM = transform;
 
-        ToWorld = cameraM;
 
-        Matrix4 lightposM = Matrix4.CreateTranslation(lightpos3);
-        lightposM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        lightposM = (ToWorld * lightposM);
-        Vector3 newlightpos3 = lightposM.Row3.Xyz;
+        ToWorld = Matrix4.Identity;
+
+        Vector3 campos3 = cameraM.Column3.Xyz;
+        camID = GL.GetUniformLocation(shader.programID, "campos");
+        GL.UseProgram(shader.programID);
+        GL.Uniform3(camID, campos3);        
+        Vector3 newlightpos3 = lightpos3;
         lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,newlightpos3);
 
-        //floorN.localM = ftransform;
 
         // update rotation
         //a += 1f * frameDuration;
@@ -116,7 +121,7 @@ class SceneGraph
             target.Bind();
 
             // render scene to render target
-            root.Render(ToWorld);
+            root.Render(ToWorld, cameraM);
 
             // render quad
             target.Unbind();
@@ -125,7 +130,7 @@ class SceneGraph
         else
         {
             // render scene directly to the screen
-            root.Render(ToWorld);
+            root.Render(ToWorld, cameraM);
         }
     }
 

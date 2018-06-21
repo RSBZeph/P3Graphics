@@ -8,6 +8,7 @@ in vec4 worldPos;
 uniform float specularity;		// shininess for this current object //
 uniform sampler2D pixels;		// texture sampler
 uniform vec3 lightPos;			// hardcoded light //
+uniform vec3 campos;
 
 // shader output
 out vec4 outputColor;
@@ -19,7 +20,6 @@ void main()
 	float dist = length(L);
 	L = normalize( L );
 	vec3 lightColor = vec3( 1, 1, 1 );
-	vec3 CamPos = vec3( 0f, -4f, -15f );
 	lightColor = normalize( lightColor );
 	float brightness = 200;
 	float ambientlight = 0.1f;
@@ -34,7 +34,7 @@ void main()
 	vec3 incidenceVector = -L;
 	vec3 reflectionVector = reflect(incidenceVector, normal.xyz);
 	reflectionVector = normalize(reflectionVector);
-	vec3 surfaceToCamera = normalize(CamPos - worldPos.xyz);
+	vec3 surfaceToCamera = normalize(campos - worldPos.xyz);
 	float cosAngle = max(0.0, dot(surfaceToCamera, reflectionVector));
 	float specularCoefficient = pow(cosAngle, specularity);
 	vec3 specularcolor = specularCoefficient * lightColor;

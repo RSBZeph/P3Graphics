@@ -11,14 +11,15 @@ out vec2 uv;
 out vec4 worldPos;
 
 uniform mat4 toWorld;
+uniform mat4 transform;
  
 // vertex shader
 void main()
 {
 	// transform vertex using supplied matrix
-	gl_Position = toWorld * vec4(vPosition, 1.0);
+	gl_Position = transform * vec4(vPosition, 1.0);
 	worldPos = toWorld * vec4( vPosition, 1.0f );
-	normal = toWorld * vec4( vNormal, 0.0f );
+	normal = normalize(toWorld * vec4( vNormal, 0.0f ));
 
 	// forward normal and uv coordinate; will be interpolated over triangle
 		//normal = transform * vec4( vNormal, 0.0f );
