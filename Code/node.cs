@@ -27,7 +27,7 @@ class Node
 
     public void Render(Matrix4 parentM, Matrix4 cameraM)
     {
-        var ToWorld = parentM * localM;
+        var ToWorld = localM * parentM;
         var TC = cameraM * ToWorld;
         if (rendernode)
         {            

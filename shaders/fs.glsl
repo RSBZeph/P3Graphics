@@ -32,12 +32,18 @@ void main()
 
 	//specular calculation
 	vec3 incidenceVector = -L;
+	vec3 specularcolor;
+	if (dot(incidenceVector, normal.xyz) < 0)
+	{
 	vec3 reflectionVector = reflect(incidenceVector, normal.xyz);
 	reflectionVector = normalize(reflectionVector);
 	vec3 surfaceToCamera = normalize(campos - worldPos.xyz);
 	float cosAngle = max(0.0, dot(surfaceToCamera, reflectionVector));
 	float specularCoefficient = pow(cosAngle, specularity);
-	vec3 specularcolor = specularCoefficient * lightColor;
+	specularcolor = specularCoefficient * lightColor;
+	}
+	else
+	specularcolor = vec3(0,0,0);
 
 	outputColor = vec4( specularcolor + materialColor * (max( 0.0f, dot( L, normal.xyz ) ) * attenuation * lightColor * brightness * (1 - ambientlight) + ambientlight), 1 );
 	//outputColor = texture( pixels, uv ) + 0.5f * vec4( normal.xyz, 1 );
