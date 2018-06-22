@@ -31,13 +31,12 @@ class Node
         var TC = cameraM * ToWorld;
         foreach(Node n in children)
         {            
-          n.Render(ToWorld, TC);            
+          n.Render(ToWorld, cameraM);            
         }   
-
-        ToWorld = localM * Matrix4.CreatePerspectiveFieldOfView( 1.2f, 1.3f, .1f, 1000 ) * parentM;
+        ToWorld = parentM * localM * Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
         TC = cameraM * ToWorld;
         if (rendernode)
-        {            
+        {       
             mesh.Render(shader, ToWorld, TC, texture);
         }
     }

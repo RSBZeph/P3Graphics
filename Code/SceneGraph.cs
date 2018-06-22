@@ -82,6 +82,7 @@ class SceneGraph
         teapotN = new Node(shader, wood, teapot);
         root.children.Add(teapotN);
         floorN = new Node(shader, wood, floor);
+        floorN.localM = Matrix4.CreateTranslation( 5, 0, 0 );
         teapotN.children.Add(floorN);
     }
 
