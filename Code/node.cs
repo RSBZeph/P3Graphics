@@ -29,7 +29,7 @@ class Node
     {
         var ToWorld = parentM * localM;
         var TC = cameraM * ToWorld;
-        if (!root)
+        if (rendernode)
         {            
             mesh.Render(shader, ToWorld, TC, texture);
         }

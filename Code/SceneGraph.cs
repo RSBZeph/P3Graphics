@@ -56,7 +56,7 @@ class SceneGraph
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,lightpos3); //-z is van de camera af
 
-        root = new Node(shader, null, null, true);
+        root = new Node(shader, null, null, false);
         root.localM = Matrix4.Identity;
         CreateChildren(); 
         

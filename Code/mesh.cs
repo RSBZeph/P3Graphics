@@ -72,8 +72,6 @@ namespace Template_P3
             GL.UniformMatrix4(shader.uniform_mview, false, ref Tc);
             GL.Uniform1(shader.uniform_spec, specularity);
 
-            GL.UniformMatrix4(shader.uniform_mview, false, ref cameraM);
-
             // enable position, normal and uv attributes
             GL.EnableVertexAttribArray(shader.attribute_vpos);
             GL.EnableVertexAttribArray(shader.attribute_vnrm);
