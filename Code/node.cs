@@ -14,22 +14,22 @@ class Node
     Shader shader;
     Texture texture;
     Mesh mesh;
-    bool root = false;
+    bool rendernode;
         
-    public Node(Shader s, Texture t, Mesh m, bool Root = false)
+    public Node(Shader s, Texture t, Mesh m, bool Rendernode = true)
     {
         shader = s;
         texture = t;
-        root = Root;
+        rendernode = Rendernode;
         mesh = m;
-        if (!root)
+        if (rendernode)
             localM = mesh.LocalM;
     }
 
     public void Render(Matrix4 parentM)
     {
         ToWorld = parentM * localM;
-        if (!root)
+        if (rendernode)
         {            
             mesh.Render(shader, ToWorld, texture);
         }

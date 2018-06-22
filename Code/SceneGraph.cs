@@ -52,7 +52,7 @@ class SceneGraph
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,lightpos3); //-z is van de camera af
 
-        root = new Node(shader, null, null, true);
+        root = new Node(shader, null, null, false);
         root.localM = Matrix4.Identity;
         CreateChildren();        
     }
@@ -145,16 +145,16 @@ class SceneGraph
             if (KBS.IsKeyDown(Key.S))        
                 cameraM *= Matrix4.CreateTranslation(0, 0, -(8f * frameDuration));        
             if (KBS.IsKeyDown(Key.K))        
-                cameraM *= Matrix4.CreateRotationX((0.8f * frameDuration));        
+                cameraM *= Matrix4.CreateRotationX((-0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.I))        
-                cameraM *= Matrix4.CreateRotationX(-(0.8f * frameDuration));        
+                cameraM *= Matrix4.CreateRotationX((0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.J))        
                 cameraM *= Matrix4.CreateRotationY((0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.L))        
                 cameraM *= Matrix4.CreateRotationY(-(0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.U))        
-                cameraM *= Matrix4.CreateRotationZ((0.8f * frameDuration));        
-            if (KBS.IsKeyDown(Key.O))        
                 cameraM *= Matrix4.CreateRotationZ(-(0.8f * frameDuration));        
+            if (KBS.IsKeyDown(Key.O))        
+                cameraM *= Matrix4.CreateRotationZ((0.8f * frameDuration));        
         }
 }
