@@ -25,17 +25,17 @@ class Node
             localM = mesh.LocalM;
     }
 
-    public void Render(Matrix4 parentM, Matrix4 Cam)
+    public void Render(Matrix4 parentM, Matrix4 cameraM)
     {
-        Matrix4 TW = localM * parentM;
-        Matrix4 TC = Cam;
-        if (rendernode)
+        var ToWorld = parentM * localM;
+        var TC = cameraM * ToWorld;
+        if (!root)
         {            
-            mesh.Render(shader, TW, TC, texture);
+            mesh.Render(shader, ToWorld, TC, texture);
         }
         foreach(Node n in children)
         {            
-          n.Render(TW, TC);            
+          n.Render(ToWorld, TC);            
         }   
     }
 }
