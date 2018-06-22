@@ -61,7 +61,7 @@ class SceneGraph
         CreateChildren(); 
         
         cameraM = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-        cameraM *= Matrix4.CreateTranslation(0, -4, -15);
+        cameraM *= Matrix4.CreateTranslation(0, -4, -10);
         cameraM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
     }
 
@@ -95,9 +95,6 @@ class SceneGraph
         CameraControls(frameDuration);
 
         //prepare matrix for vertex shader
-
-
-        ToWorld = Matrix4.Identity;
 
         Vector3 campos3 = cameraM.Column3.Xyz;
         camID = GL.GetUniformLocation(shader.programID, "campos");
