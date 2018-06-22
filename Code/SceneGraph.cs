@@ -26,7 +26,7 @@ class SceneGraph
     int lightID, camID;
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
-    Matrix4 transform, ftransform, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
+    Matrix4 teapotT, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
     KeyboardState KBS;
     Vector3 lightpos3 = new Vector3(0, 10, 0);
 
@@ -96,19 +96,20 @@ class SceneGraph
         CameraControls(frameDuration);
 
         //prepare matrix for vertex shader
-        Vector3 campos3 = cameraM.Column3.Xyz;
+        Vector3 campos3 = -cameraM.Row3.Xyz;
         camID = GL.GetUniformLocation(shader.programID, "campos");
         GL.UseProgram(shader.programID);
-        GL.Uniform3(camID, campos3);        
+        GL.Uniform3(camID, campos3);
+        
         Vector3 newlightpos3 = lightpos3;
         lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,newlightpos3);
 
-        Matrix4 transform = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), 0);
-        Matrix4 toWorld = transform;
-        transform *= Matrix4.CreateTranslation( 0, -4, -15 );
-        teapotN.localM = transform;
+        Matrix4 teapotT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), 0);
+        Matrix4 toWorld = teapotT;
+        teapotT *= Matrix4.CreateTranslation( 0, -4, -15 );
+        teapotN.localM = teapotT;
 
         // update rotation
         a += 1f * frameDuration;
@@ -139,9 +140,9 @@ class SceneGraph
         {
             KBS = Keyboard.GetState();
             if (KBS.IsKeyDown(Key.E))        
-                cameraM *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);        
-            if (KBS.IsKeyDown(Key.Q))        
                 cameraM *= Matrix4.CreateTranslation(0, -(8f * frameDuration), 0);        
+            if (KBS.IsKeyDown(Key.Q))        
+                cameraM *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);        
             if (KBS.IsKeyDown(Key.A))        
                 cameraM *= Matrix4.CreateTranslation((8f * frameDuration), 0, 0);        
             if (KBS.IsKeyDown(Key.D))        
