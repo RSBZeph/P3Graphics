@@ -28,7 +28,7 @@ class SceneGraph
     Stopwatch timer;                        // timer for measuring frame duration
     Matrix4 transform, ftransform, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
     KeyboardState KBS;
-    Vector3 lightpos3 = new Vector3(7, 2, 5);
+    Vector3 lightpos3 = new Vector3(0, 10, 0);
 
     public void Init()
     {
@@ -60,9 +60,9 @@ class SceneGraph
         root.localM = Matrix4.Identity;
         CreateChildren(); 
         
-        cameraM = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-        cameraM *= Matrix4.CreateTranslation(0, -4, -10);
-        cameraM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        //cameraM = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
+        //cameraM *= Matrix4.CreateTranslation(0, -4, -10);
+        //cameraM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
     }
 
     void LoadMeshes()
@@ -95,7 +95,6 @@ class SceneGraph
         CameraControls(frameDuration);
 
         //prepare matrix for vertex shader
-
         Vector3 campos3 = cameraM.Column3.Xyz;
         camID = GL.GetUniformLocation(shader.programID, "campos");
         GL.UseProgram(shader.programID);
@@ -105,10 +104,15 @@ class SceneGraph
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,newlightpos3);
 
+        Matrix4 transform = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a);
+        Matrix4 toWorld = transform;
+        transform *= Matrix4.CreateTranslation( 0, -4, -15 );
+        transform *= Matrix4.CreatePerspectiveFieldOfView( 1.2f, 1.3f, .1f, 1000 );
+        teapotN.localM = transform;
 
         // update rotation
-        //a += 1f * frameDuration;
-        a = 0;
+        a += 1f * frameDuration;
+        //a = 0;
         if (a > 2 * PI) 
             a -= 2 * PI;
 

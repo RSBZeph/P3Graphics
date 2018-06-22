@@ -17,9 +17,9 @@ uniform mat4 transform;
 void main()
 {
 	// transform vertex using supplied matrix
-	gl_Position = vec4(vPosition, 1.0) * transform;
-	worldPos = vec4( vPosition, 1.0f ) * toWorld;
-	normal = normalize(vec4( vNormal, 0.0f ) * toWorld);
+	gl_Position = transform * vec4( vPosition, 1.0 );
+	worldPos = toWorld * vec4( vPosition, 1.0f );
+	normal = toWorld * vec4( vNormal, 0.0f );
 
 	// forward normal and uv coordinate; will be interpolated over triangle
 		//normal = transform * vec4( vNormal, 0.0f );
