@@ -104,10 +104,9 @@ class SceneGraph
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,newlightpos3);
 
-        Matrix4 transform = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a);
+        Matrix4 transform = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), 0);
         Matrix4 toWorld = transform;
         transform *= Matrix4.CreateTranslation( 0, -4, -15 );
-        transform *= Matrix4.CreatePerspectiveFieldOfView( 1.2f, 1.3f, .1f, 1000 );
         teapotN.localM = transform;
 
         // update rotation
