@@ -23,12 +23,12 @@ class SceneGraph
     bool useRenderTarget = true;
     const float PI = 3.1415926535f;         // PI
     float a = 0f;                           // teapot rotation angle
-    int lightID;
+    int lightID, camID;
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
-    Matrix4 transform, ftransform, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
+    Matrix4 teapotT, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
     KeyboardState KBS;
-    Vector3 lightpos3 = new Vector3(7, 2, 0);
+    Vector3 lightpos3 = new Vector3(0, 5, 0);
 
     public void Init()
     {
@@ -48,13 +48,21 @@ class SceneGraph
         // create the render target
         target = new RenderTarget(screen.width, screen.height);
 
+        camID = GL.GetUniformLocation(shader.programID, "campos");
+        GL.UseProgram(shader.programID);
+        GL.Uniform3(camID, 0,0,0);
+
         lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,lightpos3); //-z is van de camera af
 
         root = new Node(shader, null, null, false);
         root.localM = Matrix4.Identity;
-        CreateChildren();        
+        CreateChildren(); 
+        
+        //cameraM = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
+        //cameraM *= Matrix4.CreateTranslation(0, -4, -10);
+        //cameraM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
     }
 
     void LoadMeshes()
@@ -74,39 +82,37 @@ class SceneGraph
         teapotN = new Node(shader, wood, teapot);
         root.children.Add(teapotN);
         floorN = new Node(shader, wood, floor);
+        floorN.localM = Matrix4.CreateTranslation( 5, 0, 0 );
         teapotN.children.Add(floorN);
     }
 
     public void Render()
     {
         // measure frame duration
-        float frameDuration = (float)timer.Elapsed.TotalSeconds;//timer.ElapsedMilliseconds;
+        float frameDuration = (float)timer.Elapsed.TotalSeconds;    //timer.ElapsedMilliseconds;
         timer.Reset();
         timer.Start();
         
         CameraControls(frameDuration);
 
         //prepare matrix for vertex shader
-        Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-        transform *= Matrix4.CreateTranslation(0, -4, -15);
-        transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        teapotN.localM = transform;
-
-        ToWorld = cameraM;
-
-        Matrix4 lightposM = Matrix4.CreateTranslation(lightpos3);
-        lightposM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        lightposM = (ToWorld * lightposM);
-        Vector3 newlightpos3 = lightposM.Row3.Xyz;
+        Vector3 campos3 = -cameraM.Row3.Xyz;
+        camID = GL.GetUniformLocation(shader.programID, "campos");
+        GL.UseProgram(shader.programID);
+        GL.Uniform3(camID, campos3);
+        
+        Vector3 newlightpos3 = lightpos3;
         lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,newlightpos3);
 
-        //floorN.localM = ftransform;
+        Matrix4 teapotT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), 0);
+        teapotT *= Matrix4.CreateTranslation( 0, -4, -15 );
+        teapotN.localM = teapotT;
 
         // update rotation
-        //a += 1f * frameDuration;
-        a = 0;
+        a += 1f * frameDuration;
+        //a = 0;
         if (a > 2 * PI) 
             a -= 2 * PI;
 
@@ -116,7 +122,7 @@ class SceneGraph
             target.Bind();
 
             // render scene to render target
-            root.Render(ToWorld);
+            root.Render(ToWorld, cameraM);
 
             // render quad
             target.Unbind();
@@ -125,7 +131,7 @@ class SceneGraph
         else
         {
             // render scene directly to the screen
-            root.Render(ToWorld);
+            root.Render(ToWorld, cameraM);
         }
     }
 
@@ -133,9 +139,9 @@ class SceneGraph
         {
             KBS = Keyboard.GetState();
             if (KBS.IsKeyDown(Key.E))        
-                cameraM *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);        
-            if (KBS.IsKeyDown(Key.Q))        
                 cameraM *= Matrix4.CreateTranslation(0, -(8f * frameDuration), 0);        
+            if (KBS.IsKeyDown(Key.Q))        
+                cameraM *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);        
             if (KBS.IsKeyDown(Key.A))        
                 cameraM *= Matrix4.CreateTranslation((8f * frameDuration), 0, 0);        
             if (KBS.IsKeyDown(Key.D))        
@@ -149,9 +155,9 @@ class SceneGraph
             if (KBS.IsKeyDown(Key.I))        
                 cameraM *= Matrix4.CreateRotationX((0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.J))        
-                cameraM *= Matrix4.CreateRotationY((0.8f * frameDuration));        
-            if (KBS.IsKeyDown(Key.L))        
                 cameraM *= Matrix4.CreateRotationY(-(0.8f * frameDuration));        
+            if (KBS.IsKeyDown(Key.L))        
+                cameraM *= Matrix4.CreateRotationY((0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.U))        
                 cameraM *= Matrix4.CreateRotationZ(-(0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.O))        
