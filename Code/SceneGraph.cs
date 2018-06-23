@@ -28,7 +28,7 @@ class SceneGraph
     Stopwatch timer;                        // timer for measuring frame duration
     Matrix4 teapotT, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
     KeyboardState KBS;
-    Vector3 lightpos3 = new Vector3(0, 10, 0);
+    Vector3 lightpos3 = new Vector3(0, 5, 0);
 
     public void Init()
     {
@@ -89,7 +89,7 @@ class SceneGraph
     public void Render()
     {
         // measure frame duration
-        float frameDuration = (float)timer.Elapsed.TotalSeconds;//timer.ElapsedMilliseconds;
+        float frameDuration = (float)timer.Elapsed.TotalSeconds;    //timer.ElapsedMilliseconds;
         timer.Reset();
         timer.Start();
         
@@ -107,7 +107,6 @@ class SceneGraph
         GL.Uniform3(lightID,newlightpos3);
 
         Matrix4 teapotT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), 0);
-        Matrix4 toWorld = teapotT;
         teapotT *= Matrix4.CreateTranslation( 0, -4, -15 );
         teapotN.localM = teapotT;
 
@@ -156,9 +155,9 @@ class SceneGraph
             if (KBS.IsKeyDown(Key.I))        
                 cameraM *= Matrix4.CreateRotationX(-(0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.J))        
-                cameraM *= Matrix4.CreateRotationY((0.8f * frameDuration));        
-            if (KBS.IsKeyDown(Key.L))        
                 cameraM *= Matrix4.CreateRotationY(-(0.8f * frameDuration));        
+            if (KBS.IsKeyDown(Key.L))        
+                cameraM *= Matrix4.CreateRotationY((0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.U))        
                 cameraM *= Matrix4.CreateRotationZ((0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.O))        

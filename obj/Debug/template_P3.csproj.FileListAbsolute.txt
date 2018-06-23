@@ -57,3 +57,4 @@ C:\Users\Jeroen\Source\Repos\P3Graphics\obj\Debug\template_P3.csproj.CoreCompile
 C:\Users\Jeroen\Source\Repos\P3Graphics\obj\Debug\template_P3.csproj.CopyComplete
 C:\Users\Jeroen\Source\Repos\P3Graphics\obj\Debug\template_P3.exe
 C:\Users\Jeroen\Source\Repos\P3Graphics\obj\Debug\template_P3.pdb
+C:\Users\HP\Source\Repos\P3Graphics\obj\Debug\template_P3.csprojAssemblyReference.cache

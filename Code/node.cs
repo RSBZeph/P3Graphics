@@ -27,17 +27,14 @@ class Node
 
     public void Render(Matrix4 parentM, Matrix4 cameraM)
     {
-        var ToWorld = localM * parentM;
-        var TC = cameraM * ToWorld;
+        var TW = localM * parentM;
+        var TC = localM * cameraM;
         foreach(Node n in children)
         {            
-          n.Render(ToWorld, cameraM);            
+          n.Render(TW, TC);            
         }   
-        ToWorld = parentM * localM * Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-        TC = cameraM * ToWorld;
-        if (rendernode)
-        {       
-            mesh.Render(shader, ToWorld, TC, texture);
-        }
+        TC *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        if (rendernode)               
+            mesh.Render(shader, TW, TC, texture);        
     }
 }
