@@ -17,7 +17,7 @@ class SceneGraph
     SoundPlayer music;    
     Node root;
     Node teapotN, floorN, carN, empty, smallteapot, carN2;
-    Texture wood, earth, cool, track, carTex;// texture to use for rendering
+    Texture wood, cool, track, carTex;// texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
     Mesh teapot, floor, magikarp, car;      // a mesh to draw the teapot using OpenGL 
@@ -95,7 +95,7 @@ class SceneGraph
         teapotN = new Node(shader, wood, teapot);
         empty.children.Add(teapotN);
 
-        smallteapot = new Node(shader, earth, teapot);
+        smallteapot = new Node(shader, cool, teapot);
         teapotN.children.Add(smallteapot);
 
         floorN = new Node(shader, track, floor);
@@ -145,7 +145,7 @@ class SceneGraph
 
         Matrix4 carT2 = Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), 0.2f * (float)Math.PI); ;
         carT2 *= Matrix4.CreateTranslation(-3.5f, -2.25f, 0);
-        carT2 *= Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+        carT2 *= Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), b);
         carN2.localM = carT2;
 
 
