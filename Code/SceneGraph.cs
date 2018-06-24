@@ -91,6 +91,7 @@ class SceneGraph
         transform *= Matrix4.CreateTranslation(0, -4, -15);
         transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
         teapotN.localM = transform;
+        
 
         ToWorld = cameraM;
 
