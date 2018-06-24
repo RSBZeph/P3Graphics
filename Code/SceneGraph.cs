@@ -89,17 +89,22 @@ class SceneGraph
     void CreateChildren()
     {
         empty = new Node(shader, null, null, false);
+        empty.localM = Matrix4.CreateTranslation( 0, -4, -15 );
         root.children.Add(empty);
+
         teapotN = new Node(shader, wood, teapot);
         empty.children.Add(teapotN);
+
         floorN = new Node(shader, wood, floor);
-        floorN.localM = Matrix4.CreateTranslation( 5, 0, 0 );
+        floorN.localM = Matrix4.CreateTranslation(0, -2, 0) * Matrix4.Scale(4);
         empty.children.Add(floorN);
-        minitN = new Node(shader, wood, car);
+
+        minitN = new Node(shader, cool, car);
         empty.children.Add(minitN);
+
         magikarpN = new Node(shader, cool, magikarp);
         magikarpN.localM = Matrix4.CreateTranslation(5, 0, 0);
-        floorN.children.Add(magikarpN);
+        //floorN.children.Add(magikarpN);
     }
 
     public void Render()
@@ -122,8 +127,6 @@ class SceneGraph
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,newlightpos3);
 
-        empty.localM = Matrix4.CreateTranslation( 0, -4, -15 );
-
         Matrix4 teapotT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a);       
         teapotN.localM = teapotT;
         
@@ -131,10 +134,6 @@ class SceneGraph
         minitT = Matrix4.CreateTranslation(10, 0, 0);
         minitT *= Matrix4.CreateFromAxisAngle( new Vector3( 0, 0, 1), a);
         minitN.localM = minitT;
-
-        Matrix4 floorT = Matrix4.CreateTranslation(0, -2, 0);
-        floorT *= Matrix4.Scale(4);
-        floorN.localM = floorT;
 
         Matrix4 magikarpT = Matrix4.CreateFromAxisAngle(new Vector3(1, 1, 1), a);
         magikarpT *= Matrix4.CreateTranslation(8, 4, 0);
