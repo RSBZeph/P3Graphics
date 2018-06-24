@@ -13,7 +13,7 @@ class Node
     Shader shader;
     Texture texture;
     Mesh mesh;
-    bool rendernode = true;
+    bool rendernode = true; //if set to false, the node won't be rendered. Usefull for point-of-reference nodes like the root
 
     //Fills in the variables given when an instance is created
     public Node(Shader s, Texture t, Mesh m, bool RenderNode = true)
@@ -26,7 +26,7 @@ class Node
             localM = mesh.LocalM;
     }
 
-    //When called renders the objects and their children, while calculating the proper matrices for them
+    //When called, renders the objects and their children, while calculating the proper matrices for them
     public void Render(Matrix4 parentM, Matrix4 cameraM)
     {
         var TW = localM * parentM;
