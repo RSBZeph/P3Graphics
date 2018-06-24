@@ -67,7 +67,7 @@ namespace Template_P3
             // enable shader
             GL.UseProgram(shader.programID);
 
-            // pass transform and toWorld to vertex shader
+            // pass Tw and Tc to vertex shader
             GL.UniformMatrix4(shader.uniform_2world, false, ref Tw);
             GL.UniformMatrix4(shader.uniform_mview, false, ref Tc);
             GL.Uniform1(shader.uniform_spec, specularity);

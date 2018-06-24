@@ -26,7 +26,7 @@ class Node
             localM = mesh.LocalM;
     }
 
-    //When called Renders the Objects and their children, while calculatin the proper matrices for them
+    //When called renders the objects and their children, while calculating the proper matrices for them
     public void Render(Matrix4 parentM, Matrix4 cameraM)
     {
         var TW = localM * parentM;

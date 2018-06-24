@@ -14,8 +14,7 @@ using OpenTK.Graphics.OpenGL;
 
 class SceneGraph
 {
-    SoundPlayer music;
-    
+    SoundPlayer music;    
     Node root;
     Node teapotN, floorN, carN, empty, smallteapot, carN2;
     Texture wood, earth, cool, track, carTex;// texture to use for rendering
@@ -40,6 +39,7 @@ class SceneGraph
         music.PlayLooping();
         LoadTextures();
         LoadMeshes();
+        //set specularity of each mesh
         teapot.specularity = 20;
         floor.specularity = 200;
         car.specularity = 10;        
@@ -55,21 +55,19 @@ class SceneGraph
         // create the render target
         target = new RenderTarget(screen.width, screen.height);
 
+        // pass cameraposition to fragment shader
         camID = GL.GetUniformLocation(shader.programID, "campos");
         GL.UseProgram(shader.programID);
         GL.Uniform3(camID, 0,0,0);
 
+        // pass lightposition to fragment shader
         lightID = GL.GetUniformLocation(shader.programID,"lightPos");   
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,lightpos3); //-z is van de camera af
 
         root = new Node(shader, null, null, false);
         root.localM = Matrix4.Identity;
-        CreateChildren(); 
-        
-        //cameraM = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-        //cameraM *= Matrix4.CreateTranslation(0, -4, -10);
-        //cameraM *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        CreateChildren();        
     }
 
     void LoadMeshes()
@@ -120,7 +118,7 @@ class SceneGraph
         
         CameraControls(frameDuration);
 
-        //prepare matrix for vertex shader
+        //prepare matrices for vertex shader
         Vector3 campos3 = -cameraM.Row3.Xyz;
         camID = GL.GetUniformLocation(shader.programID, "campos");
         GL.UseProgram(shader.programID);

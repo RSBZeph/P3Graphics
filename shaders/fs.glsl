@@ -22,8 +22,9 @@ void main()
 	vec3 lightColor = vec3( 1, 1, 1 );
 	lightColor = normalize( lightColor );
 	float brightness = 500;
-	float ambientlight = 0.1f;
+	float ambientfactor = 0.1f;
 	vec3 materialColor = texture( pixels, uv ).xyz;
+
 	float attenuation = 1.0f / (dist * dist);
 	if (attenuation < 0)
 	attenuation = 0;
@@ -45,6 +46,6 @@ void main()
 	else
 	specularcolor = vec3(0,0,0);
 
-	outputColor = vec4( specularcolor + materialColor * (max( 0.0f, dot( L, normal.xyz ) ) * attenuation * lightColor * brightness * (1 - ambientlight) + ambientlight), 1 );
-	//outputColor = texture( pixels, uv ) + 0.5f * vec4( normal.xyz, 1 );
+	// outputcolor = specular + materialcolor * (ambientfactor * ambient + (1-ambientfactor) * diffuse)
+	outputColor = vec4( specularcolor + materialColor * (max( 0.0f, dot( L, normal.xyz ) ) * attenuation * lightColor * brightness * (1 - ambientfactor) + ambientfactor), 1 );
 }
