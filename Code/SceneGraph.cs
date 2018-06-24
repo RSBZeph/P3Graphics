@@ -13,11 +13,11 @@ using OpenTK.Graphics.OpenGL;
 class SceneGraph
 {
     Node root;
-    Node teapotN, floorN;
-    Texture wood, earth;                    // texture to use for rendering
+    Node teapotN, floorN, minitN, empty;
+    Texture wood, earth, carpaint;                    // texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
-    Mesh teapot, floor;                     // a mesh to draw the teapot using OpenGL
+    Mesh teapot, floor, car;                // a mesh to draw the teapot using OpenGL
     RenderTarget target;                    // intermediate render target
     ScreenQuad quad;                        // screen filling quad for post processing
     bool useRenderTarget = true;
@@ -28,7 +28,7 @@ class SceneGraph
     Stopwatch timer;                        // timer for measuring frame duration
     Matrix4 teapotT, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
     KeyboardState KBS;
-    Vector3 lightpos3 = new Vector3(0, 5, 0);
+    Vector3 lightpos3 = new Vector3(0, 7, 10);
 
     public void Init()
     {
@@ -68,22 +68,28 @@ class SceneGraph
     void LoadMeshes()
     {   
         teapot = new Mesh("../../assets/teapot.obj");
-        floor = new Mesh("../../assets/floor.obj");
+        floor = new Mesh("../../assets/floor.obj");        
+        car = new Mesh("../../assets/car.obj");   
     }
 
     void LoadTextures()
     {
         earth = new Texture("../../assets/Earth.png");
         wood = new Texture("../../assets/wood.jpg");
+        carpaint = new Texture("../../assets/caramb2.png");
     }
 
     void CreateChildren()
     {
+        empty = new Node(shader, null, null, false);
+        root.children.Add(empty);
         teapotN = new Node(shader, wood, teapot);
-        root.children.Add(teapotN);
+        empty.children.Add(teapotN);
         floorN = new Node(shader, wood, floor);
         floorN.localM = Matrix4.CreateTranslation( 5, 0, 0 );
-        teapotN.children.Add(floorN);
+        empty.children.Add(floorN);
+        minitN = new Node(shader, wood, car);
+        empty.children.Add(minitN);
     }
 
     public void Render()
@@ -106,9 +112,19 @@ class SceneGraph
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,newlightpos3);
 
-        Matrix4 teapotT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), 0);
-        teapotT *= Matrix4.CreateTranslation( 0, -4, -15 );
+        empty.localM = Matrix4.CreateTranslation( 0, -4, -15 );
+
+        Matrix4 teapotT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a);       
         teapotN.localM = teapotT;
+        
+        Matrix4 minitT;
+        minitT = Matrix4.CreateTranslation(10, 0, 0);
+        minitT *= Matrix4.CreateFromAxisAngle( new Vector3( 0, 0, 1), a);
+        minitN.localM = minitT;
+
+        Matrix4 floorT = Matrix4.CreateTranslation(0, -2, 0);
+        floorT *= Matrix4.Scale(4);
+        floorN.localM = floorT;
 
         // update rotation
         a += 1f * frameDuration;
