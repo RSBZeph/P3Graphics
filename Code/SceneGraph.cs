@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Media;
 using Template_P3;
 using OpenTK;
 using OpenTK.Input;
@@ -10,14 +11,17 @@ using System.Diagnostics;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
+
 class SceneGraph
 {
+    SoundPlayer music;
+    
     Node root;
-    Node teapotN, floorN, minitN, empty;
-    Texture wood, earth, carpaint;                    // texture to use for rendering
+    Node teapotN, floorN, minitN, empty, magikarpN;
+    Texture wood, earth, cool;                    // texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
-    Mesh teapot, floor, car;                // a mesh to draw the teapot using OpenGL
+    Mesh teapot, floor, magikarp, car;      // a mesh to draw the teapot using OpenGL 
     RenderTarget target;                    // intermediate render target
     ScreenQuad quad;                        // screen filling quad for post processing
     bool useRenderTarget = true;
@@ -32,6 +36,8 @@ class SceneGraph
 
     public void Init()
     {
+        music = new SoundPlayer("../../assets/DejaVu.wav");
+        music.PlayLooping();
         LoadTextures();
         LoadMeshes();
         teapot.specularity = 20;
@@ -68,15 +74,16 @@ class SceneGraph
     void LoadMeshes()
     {   
         teapot = new Mesh("../../assets/teapot.obj");
-        floor = new Mesh("../../assets/floor.obj");        
-        car = new Mesh("../../assets/car.obj");   
+        floor = new Mesh("../../assets/floor.obj");
+        magikarp = new Mesh("../../assets/Magikarp.obj");
+        car = new Mesh("../../assets/car.obj");
     }
 
     void LoadTextures()
     {
         earth = new Texture("../../assets/Earth.png");
         wood = new Texture("../../assets/wood.jpg");
-        carpaint = new Texture("../../assets/caramb2.png");
+        cool = new Texture("../../assets/cool.jpg");
     }
 
     void CreateChildren()
@@ -90,6 +97,9 @@ class SceneGraph
         empty.children.Add(floorN);
         minitN = new Node(shader, wood, car);
         empty.children.Add(minitN);
+        magikarpN = new Node(shader, cool, magikarp);
+        magikarpN.localM = Matrix4.CreateTranslation(5, 0, 0);
+        floorN.children.Add(magikarpN);
     }
 
     public void Render()
@@ -125,6 +135,10 @@ class SceneGraph
         Matrix4 floorT = Matrix4.CreateTranslation(0, -2, 0);
         floorT *= Matrix4.Scale(4);
         floorN.localM = floorT;
+
+        Matrix4 magikarpT = Matrix4.CreateFromAxisAngle(new Vector3(1, 1, 1), a);
+        magikarpT *= Matrix4.CreateTranslation(8, 4, 0);
+        magikarpN.localM = magikarpT;
 
         // update rotation
         a += 1f * frameDuration;
@@ -166,9 +180,9 @@ class SceneGraph
                 cameraM *= Matrix4.CreateTranslation(0, 0, (8f * frameDuration));        
             if (KBS.IsKeyDown(Key.S))        
                 cameraM *= Matrix4.CreateTranslation(0, 0, -(8f * frameDuration));        
-            if (KBS.IsKeyDown(Key.K))        
-                cameraM *= Matrix4.CreateRotationX((-0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.I))        
+                cameraM *= Matrix4.CreateRotationX((-0.8f * frameDuration));        
+            if (KBS.IsKeyDown(Key.K))        
                 cameraM *= Matrix4.CreateRotationX((0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.J))        
                 cameraM *= Matrix4.CreateRotationY(-(0.8f * frameDuration));        
