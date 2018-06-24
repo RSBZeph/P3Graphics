@@ -21,7 +21,7 @@ void main()
 	L = normalize( L );
 	vec3 lightColor = vec3( 1, 1, 1 );
 	lightColor = normalize( lightColor );
-	float brightness = 300;
+	float brightness = 1000;
 	float ambientlight = 0.1f;
 	vec3 materialColor = texture( pixels, uv ).xyz;
 	float attenuation = 1.0f / (dist * dist);
