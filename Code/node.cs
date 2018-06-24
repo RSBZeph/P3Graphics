@@ -14,7 +14,8 @@ class Node
     Texture texture;
     Mesh mesh;
     bool rendernode = true;
-        
+
+    //Fills in the variables given when an instance is created
     public Node(Shader s, Texture t, Mesh m, bool RenderNode = true)
     {
         shader = s;
@@ -25,11 +26,12 @@ class Node
             localM = mesh.LocalM;
     }
 
+    //When called Renders the Objects and their children, while calculatin the proper matrices for them
     public void Render(Matrix4 parentM, Matrix4 cameraM)
     {
         var TW = localM * parentM;
         var TC = localM * cameraM;
-        foreach(Node n in children)
+        foreach(Node n in children) //Renders the children
         {            
           n.Render(TW, TC);            
         }   

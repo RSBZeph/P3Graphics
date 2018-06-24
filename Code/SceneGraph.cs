@@ -80,7 +80,6 @@ class SceneGraph
 
     void LoadTextures()
     {
-        earth = new Texture("../../assets/Earth.png");
         wood = new Texture("../../assets/wood.jpg");
         cool = new Texture("../../assets/cool.jpg");
         track = new Texture("../../assets/track.jpeg");
@@ -171,17 +170,17 @@ class SceneGraph
         {
             KBS = Keyboard.GetState();
             if (KBS.IsKeyDown(Key.E))        
-                cameraM *= Matrix4.CreateTranslation(0, -(8f * frameDuration), 0);        
+                cameraM *= Matrix4.CreateTranslation(0, -(16f * frameDuration), 0);        
             if (KBS.IsKeyDown(Key.Q))        
-                cameraM *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);        
+                cameraM *= Matrix4.CreateTranslation(0, (16f * frameDuration), 0);        
             if (KBS.IsKeyDown(Key.A))        
-                cameraM *= Matrix4.CreateTranslation((8f * frameDuration), 0, 0);        
+                cameraM *= Matrix4.CreateTranslation((16f * frameDuration), 0, 0);        
             if (KBS.IsKeyDown(Key.D))        
-                cameraM *= Matrix4.CreateTranslation(-(8f * frameDuration), 0, 0);        
+                cameraM *= Matrix4.CreateTranslation(-(16f * frameDuration), 0, 0);        
             if (KBS.IsKeyDown(Key.W))        
-                cameraM *= Matrix4.CreateTranslation(0, 0, (8f * frameDuration));        
+                cameraM *= Matrix4.CreateTranslation(0, 0, (16f * frameDuration));        
             if (KBS.IsKeyDown(Key.S))        
-                cameraM *= Matrix4.CreateTranslation(0, 0, -(8f * frameDuration));        
+                cameraM *= Matrix4.CreateTranslation(0, 0, -(16f * frameDuration));        
             if (KBS.IsKeyDown(Key.I))        
                 cameraM *= Matrix4.CreateRotationX((-0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.K))        
