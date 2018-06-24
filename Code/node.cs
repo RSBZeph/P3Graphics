@@ -9,33 +9,32 @@ using Template_P3;
 class Node
 {
     public List<Node> children = new List<Node>();
-    Matrix4 ToWorld;
     public Matrix4 localM;
     Shader shader;
     Texture texture;
     Mesh mesh;
-    bool root = false;
+    bool rendernode = true;
         
-    public Node(Shader s, Texture t, Mesh m, bool Root = false)
+    public Node(Shader s, Texture t, Mesh m, bool RenderNode = true)
     {
         shader = s;
         texture = t;
-        root = Root;
+        rendernode = RenderNode;
         mesh = m;
-        if (!root)
+        if (rendernode)
             localM = mesh.LocalM;
     }
 
-    public void Render(Matrix4 parentM)
+    public void Render(Matrix4 parentM, Matrix4 cameraM)
     {
-        ToWorld = parentM * localM;
-        if (!root)
-        {            
-            mesh.Render(shader, ToWorld, texture);
-        }
+        var TW = localM * parentM;
+        var TC = localM * cameraM;
         foreach(Node n in children)
         {            
-          n.Render(ToWorld);            
+          n.Render(TW, TC);            
         }   
+        TC *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+        if (rendernode)               
+            mesh.Render(shader, TW, TC, texture);        
     }
 }

@@ -13,7 +13,6 @@ namespace Template_P3
     {
         // member variables
         public Surface screen;                  // background surface for printing etc.
-        Stopwatch timer;                        // timer for measuring frame duration
         public SceneGraph scenegraph;
 
         // initialize
