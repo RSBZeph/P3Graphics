@@ -38,9 +38,9 @@ namespace Template_P3
                 GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Marshal.SizeOf(typeof(ObjVertex))), vertices, BufferUsageHint.StaticDraw);
 
                 // generate triangle index array
-                GL.GenBuffers(1, out triangleBufferId);
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, triangleBufferId);
-                GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(triangles.Length * Marshal.SizeOf(typeof(ObjTriangle))), triangles, BufferUsageHint.StaticDraw);
+                //GL.GenBuffers(1, out triangleBufferId);
+                //GL.BindBuffer(BufferTarget.ElementArrayBuffer, triangleBufferId);
+                //GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(triangles.Length * Marshal.SizeOf(typeof(ObjTriangle))), triangles, BufferUsageHint.StaticDraw);
 
                 // generate quad index array
                 GL.GenBuffers(1, out quadBufferId);

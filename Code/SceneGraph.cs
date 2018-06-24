@@ -143,7 +143,8 @@ class SceneGraph
         carT *= Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0), b);
         carN.localM = carT;
 
-        Matrix4 carT2 = Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), 0.2f * (float)Math.PI); ;
+        Matrix4 carT2 = Matrix4.CreateScale(0.8f);
+        carT2 *= Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), 0.2f * (float)Math.PI); ;
         carT2 *= Matrix4.CreateTranslation(-3.5f, -2.25f, 0);
         carT2 *= Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), b);
         carN2.localM = carT2;
