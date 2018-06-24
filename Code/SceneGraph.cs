@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Media;
 using Template_P3;
 using OpenTK;
 using OpenTK.Input;
@@ -10,11 +11,14 @@ using System.Diagnostics;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
+
 class SceneGraph
 {
+    SoundPlayer music;
+    
     Node root;
-    Node teapotN, floorN;
-    Texture wood, earth;                    // texture to use for rendering
+    Node teapotN, floorN, magikarpN;
+    Texture wood, earth, cool;                    // texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
     Mesh teapot, floor, magikarp;                     // a mesh to draw the teapot using OpenGL
@@ -32,6 +36,8 @@ class SceneGraph
 
     public void Init()
     {
+        music = new SoundPlayer("../../assets/DejaVu.wav");
+        music.PlayLooping();
         LoadTextures();
         LoadMeshes();
         teapot.specularity = 20;
@@ -69,7 +75,7 @@ class SceneGraph
     {   
         teapot = new Mesh("../../assets/teapot.obj");
         floor = new Mesh("../../assets/floor.obj");
-        magikarp = floor = new Mesh("../../assets/Magikarp.obj");
+        magikarp = new Mesh("../../assets/Magikarp.obj");
 
     }
 
@@ -77,15 +83,19 @@ class SceneGraph
     {
         earth = new Texture("../../assets/Earth.png");
         wood = new Texture("../../assets/wood.jpg");
+        cool = new Texture("../../assets/cool.jpg");
     }
 
     void CreateChildren()
     {
         teapotN = new Node(shader, wood, teapot);
         root.children.Add(teapotN);
-        floorN = new Node(shader, wood, floor);
+        floorN = new Node(shader, earth, floor);
         floorN.localM = Matrix4.CreateTranslation( 5, 0, 0 );
         teapotN.children.Add(floorN);
+        magikarpN = new Node(shader, cool, magikarp);
+        magikarpN.localM = Matrix4.CreateTranslation(5, 0, 0);
+        floorN.children.Add(magikarpN);
     }
 
     public void Render()
@@ -112,6 +122,9 @@ class SceneGraph
         teapotT *= Matrix4.CreateTranslation( 0, -4, -15 );
         teapotN.localM = teapotT;
 
+        Matrix4 magikarpT = Matrix4.CreateFromAxisAngle(new Vector3(1, 1, 1), a);
+        magikarpT *= Matrix4.CreateTranslation(8, 4, 0);
+        magikarpN.localM = magikarpT;
         // update rotation
         a += 1f * frameDuration;
         //a = 0;
@@ -152,9 +165,9 @@ class SceneGraph
                 cameraM *= Matrix4.CreateTranslation(0, 0, (8f * frameDuration));        
             if (KBS.IsKeyDown(Key.S))        
                 cameraM *= Matrix4.CreateTranslation(0, 0, -(8f * frameDuration));        
-            if (KBS.IsKeyDown(Key.K))        
-                cameraM *= Matrix4.CreateRotationX((-0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.I))        
+                cameraM *= Matrix4.CreateRotationX((-0.8f * frameDuration));        
+            if (KBS.IsKeyDown(Key.K))        
                 cameraM *= Matrix4.CreateRotationX((0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.J))        
                 cameraM *= Matrix4.CreateRotationY(-(0.8f * frameDuration));        
