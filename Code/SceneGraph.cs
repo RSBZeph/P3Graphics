@@ -17,8 +17,8 @@ class SceneGraph
     SoundPlayer music;
     
     Node root;
-    Node teapotN, floorN, carN, empty, magikarpN;
-    Texture wood, earth, cool, track;       // texture to use for rendering
+    Node teapotN, floorN, carN, empty, carN2;
+    Texture wood, earth, cool, track, carTex;       // texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
     Mesh teapot, floor, magikarp, car;      // a mesh to draw the teapot using OpenGL 
@@ -75,7 +75,6 @@ class SceneGraph
     {   
         teapot = new Mesh("../../assets/teapot.obj");
         floor = new Mesh("../../assets/floor.obj");
-        magikarp = new Mesh("../../assets/Magikarp.obj");
         car = new Mesh("../../assets/car.obj");
     }
 
@@ -85,6 +84,7 @@ class SceneGraph
         wood = new Texture("../../assets/wood.jpg");
         cool = new Texture("../../assets/cool.jpg");
         track = new Texture("../../assets/track.jpeg");
+        carTex = new Texture("../../assets/car2.jpg");
     }
 
     void CreateChildren()
@@ -103,9 +103,8 @@ class SceneGraph
         carN = new Node(shader, cool, car);
         floorN.children.Add(carN);
 
-        magikarpN = new Node(shader, cool, magikarp);
-        magikarpN.localM = Matrix4.CreateTranslation(5, 0, 0);
-        //floorN.children.Add(magikarpN);
+        carN2 = new Node(shader, carTex, car);
+        floorN.children.Add(carN2);
     }
 
     public void Render()
@@ -128,7 +127,7 @@ class SceneGraph
         GL.UseProgram( shader.programID );
         GL.Uniform3(lightID,newlightpos3);
 
-        Matrix4 teapotT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a);       
+        Matrix4 teapotT = Matrix4.CreateFromAxisAngle( new Vector3( 0, -1, 0 ), a);       
         teapotN.localM = teapotT;
         
         Matrix4 carT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0), 0.8f * (float)Math.PI);;
@@ -136,9 +135,11 @@ class SceneGraph
         carT *= Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0), a);
         carN.localM = carT;
 
-        Matrix4 magikarpT = Matrix4.CreateFromAxisAngle(new Vector3(1, 1, 1), a);
-        magikarpT *= Matrix4.CreateTranslation(8, 4, 0);
-        magikarpN.localM = magikarpT;
+        Matrix4 carT2 = Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), 0.2f * (float)Math.PI); ;
+        carT2 *= Matrix4.CreateTranslation(-3.5f, -2.25f, 0);
+        carT2 *= Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+        carN2.localM = carT2;
+
 
         // update rotation
         a += 1f * frameDuration;
