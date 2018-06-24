@@ -17,7 +17,7 @@ class SceneGraph
     Texture wood, earth;                    // texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
-    Mesh teapot, floor;                     // a mesh to draw the teapot using OpenGL
+    Mesh teapot, floor, magikarp;                     // a mesh to draw the teapot using OpenGL
     RenderTarget target;                    // intermediate render target
     ScreenQuad quad;                        // screen filling quad for post processing
     bool useRenderTarget = true;
@@ -69,6 +69,8 @@ class SceneGraph
     {   
         teapot = new Mesh("../../assets/teapot.obj");
         floor = new Mesh("../../assets/floor.obj");
+        magikarp = floor = new Mesh("../../assets/Magikarp.obj");
+
     }
 
     void LoadTextures()
