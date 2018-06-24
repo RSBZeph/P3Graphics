@@ -49,7 +49,7 @@ namespace Template_P3
             }
         }
 
-        // render the mesh using the supplied shader and matrix
+        // render the mesh using the supplied shader and matrices
         public void Render(Shader shader, Matrix4 Tw, Matrix4 Tc, Texture texture)
         {
             // on first run, prepare buffers

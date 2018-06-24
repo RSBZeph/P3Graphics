@@ -87,6 +87,7 @@ class SceneGraph
         carTex = new Texture("../../assets/car2.jpg");
     }
 
+    //Creates the objects wich will be rendered
     void CreateChildren()
     {
         empty = new Node(shader, null, null, false);
