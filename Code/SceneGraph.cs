@@ -18,7 +18,7 @@ class SceneGraph
     
     Node root;
     Node teapotN, floorN, carN, empty, magikarpN;
-    Texture wood, earth, cool;                    // texture to use for rendering
+    Texture wood, earth, cool, track;       // texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
     Mesh teapot, floor, magikarp, car;      // a mesh to draw the teapot using OpenGL 
@@ -84,6 +84,7 @@ class SceneGraph
         earth = new Texture("../../assets/Earth.png");
         wood = new Texture("../../assets/wood.jpg");
         cool = new Texture("../../assets/cool.jpg");
+        track = new Texture("../../assets/track.jpeg");
     }
 
     void CreateChildren()
@@ -95,8 +96,8 @@ class SceneGraph
         teapotN = new Node(shader, wood, teapot);
         empty.children.Add(teapotN);
 
-        floorN = new Node(shader, wood, floor);
-        floorN.localM = Matrix4.Scale(4);
+        floorN = new Node(shader, track, floor);
+        floorN.localM = Matrix4.Scale(6);
         empty.children.Add(floorN);
 
         carN = new Node(shader, cool, car);
@@ -130,10 +131,10 @@ class SceneGraph
         Matrix4 teapotT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a);       
         teapotN.localM = teapotT;
         
-        Matrix4 minitT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0), 45);;
-        minitT = Matrix4.CreateTranslation(5, -2, 0);
-        minitT *= Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0), 0);
-        carN.localM = minitT;
+        Matrix4 carT = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0), 0.8f * (float)Math.PI);;
+        carT *= Matrix4.CreateTranslation(3.5f, -2.25f, 0);
+        carT *= Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0), a);
+        carN.localM = carT;
 
         Matrix4 magikarpT = Matrix4.CreateFromAxisAngle(new Vector3(1, 1, 1), a);
         magikarpT *= Matrix4.CreateTranslation(8, 4, 0);
