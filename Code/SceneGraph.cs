@@ -30,7 +30,7 @@ class SceneGraph
     int lightID, camID;
     public Surface screen;                  // background surface for printing etc.
     Stopwatch timer;                        // timer for measuring frame duration
-    Matrix4 teapotT, ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
+    Matrix4 ToWorld = Matrix4.Identity, cameraM = Matrix4.Identity;
     KeyboardState KBS;
     Vector3 lightpos3 = new Vector3(0, 7, 10);
 
