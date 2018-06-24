@@ -17,8 +17,8 @@ class SceneGraph
     SoundPlayer music;
     
     Node root;
-    Node teapotN, floorN, carN, empty, magikarpN, smallteapot;
-    Texture wood, earth, cool, track; // texture to use for rendering
+    Node teapotN, floorN, carN, empty, smallteapot, carN2;
+    Texture wood, earth, cool, track, carTex;// texture to use for rendering
     Shader shader;                          // shader to use for rendering
     Shader postproc;                        // shader to use for post processing
     Mesh teapot, floor, magikarp, car;      // a mesh to draw the teapot using OpenGL 
@@ -76,18 +76,18 @@ class SceneGraph
     {   
         teapot = new Mesh("../../assets/teapot.obj");
         floor = new Mesh("../../assets/floor.obj");
-        magikarp = new Mesh("../../assets/Magikarp.obj");
         car = new Mesh("../../assets/car.obj");
     }
 
     void LoadTextures()
     {
-        earth = new Texture("../../assets/Earth.png");
         wood = new Texture("../../assets/wood.jpg");
         cool = new Texture("../../assets/cool.jpg");
         track = new Texture("../../assets/track.jpeg");
+        carTex = new Texture("../../assets/car2.jpg");
     }
 
+    //Creates the objects wich will be rendered
     void CreateChildren()
     {
         empty = new Node(shader, null, null, false);
@@ -106,6 +106,9 @@ class SceneGraph
 
         carN = new Node(shader, cool, car);
         floorN.children.Add(carN);
+
+        carN2 = new Node(shader, carTex, car);
+        floorN.children.Add(carN2);
     }
 
     public void Render()
@@ -142,6 +145,12 @@ class SceneGraph
         carT *= Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0), b);
         carN.localM = carT;
 
+        Matrix4 carT2 = Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), 0.2f * (float)Math.PI); ;
+        carT2 *= Matrix4.CreateTranslation(-3.5f, -2.25f, 0);
+        carT2 *= Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+        carN2.localM = carT2;
+
+
         // update rotation
         a += 1f * frameDuration;
         b += 1.5f * frameDuration;
@@ -173,17 +182,17 @@ class SceneGraph
         {
             KBS = Keyboard.GetState();
             if (KBS.IsKeyDown(Key.E))        
-                cameraM *= Matrix4.CreateTranslation(0, -(8f * frameDuration), 0);        
+                cameraM *= Matrix4.CreateTranslation(0, -(16f * frameDuration), 0);        
             if (KBS.IsKeyDown(Key.Q))        
-                cameraM *= Matrix4.CreateTranslation(0, (8f * frameDuration), 0);        
+                cameraM *= Matrix4.CreateTranslation(0, (16f * frameDuration), 0);        
             if (KBS.IsKeyDown(Key.A))        
-                cameraM *= Matrix4.CreateTranslation((8f * frameDuration), 0, 0);        
+                cameraM *= Matrix4.CreateTranslation((16f * frameDuration), 0, 0);        
             if (KBS.IsKeyDown(Key.D))        
-                cameraM *= Matrix4.CreateTranslation(-(8f * frameDuration), 0, 0);        
+                cameraM *= Matrix4.CreateTranslation(-(16f * frameDuration), 0, 0);        
             if (KBS.IsKeyDown(Key.W))        
-                cameraM *= Matrix4.CreateTranslation(0, 0, (8f * frameDuration));        
+                cameraM *= Matrix4.CreateTranslation(0, 0, (16f * frameDuration));        
             if (KBS.IsKeyDown(Key.S))        
-                cameraM *= Matrix4.CreateTranslation(0, 0, -(8f * frameDuration));        
+                cameraM *= Matrix4.CreateTranslation(0, 0, -(16f * frameDuration));        
             if (KBS.IsKeyDown(Key.I))        
                 cameraM *= Matrix4.CreateRotationX((-0.8f * frameDuration));        
             if (KBS.IsKeyDown(Key.K))        
